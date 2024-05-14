@@ -1,4 +1,4 @@
-package com.jsontextfield.viable
+package com.jsontextfield.viable.entities
 
 import org.json.JSONObject
 

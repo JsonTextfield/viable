@@ -1,7 +1,7 @@
-package com.jsontextfield.viable
+package com.jsontextfield.viable.entities
 
-import android.icu.text.DateFormat
 import android.icu.text.SimpleDateFormat
+import androidx.compose.ui.text.intl.Locale
 import org.json.JSONObject
 import java.util.Date
 
@@ -11,10 +11,9 @@ data class Schedule(
 ) {
     companion object {
         fun fromJson(jsonObject: JSONObject): Schedule {
-            val sdf = SimpleDateFormat()
             return Schedule(
-                estimate = sdf.parse(jsonObject.optString("estimated")),
-                schedule = sdf.parse(jsonObject.optString("scheduled")),
+                //estimate = jsonObject.optString("estimated"),
+                //schedule = jsonObject.optString("scheduled"),
             )
         }
     }

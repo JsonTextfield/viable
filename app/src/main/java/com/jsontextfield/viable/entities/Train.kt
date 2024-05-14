@@ -1,5 +1,6 @@
-package com.jsontextfield.viable
+package com.jsontextfield.viable.entities
 
+import android.text.Html
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
 import org.json.JSONObject
@@ -15,7 +16,7 @@ data class Train(
         return "$number $location"
     }
 
-    val nextStop: Stop?
+    private val nextStop: Stop?
         get() {
             return stops.find {
                 it.eta != "ARR"
@@ -30,8 +31,36 @@ data class Train(
             else if (arrived) {
                 return "Arrived"
             }
-            return "Next stop: ${nextStop?.name} in ${nextStop?.eta}"
+
+            return "Next stop: ${nextStop?.name} in ${
+                Html.fromHtml(
+                    nextStop?.eta,
+                    Html.FROM_HTML_MODE_LEGACY
+                )
+            }"
         }
+
+    override fun hashCode(): Int {
+        var result = number.hashCode()
+        result = 31 * result + departed.hashCode()
+        result = 31 * result + arrived.hashCode()
+        result = 31 * result + (location?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Train
+
+        if (number != other.number) return false
+        if (departed != other.departed) return false
+        if (arrived != other.arrived) return false
+        if (location != other.location) return false
+
+        return true
+    }
 
     companion object {
         fun fromJson(jsonObject: JSONObject): Train {
@@ -60,11 +89,10 @@ data class Train(
             )
         }
     }
-
 }
 
 fun String.toMixedCase(): String {
     return toLowerCase(Locale.current)
         .split(" ")
-        .joinToString("") { word -> word.replaceFirstChar { it.uppercase() } }
+        .joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
 }
