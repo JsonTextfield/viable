@@ -1,44 +1,21 @@
 package com.jsontextfield.viable.entities
 
-import android.text.Html
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
 import org.json.JSONObject
 
 data class Train(
-    var number: String,
-    var departed: Boolean,
-    var arrived: Boolean,
-    var location: LatLon?,
-    var stops: List<Stop>,
+    val number: String,
+    val headsign: String,
+    val departed: Boolean,
+    val arrived: Boolean,
+    val location: LatLon?,
+    val stops: List<Stop>,
 ) {
-    override fun toString(): String {
-        return "$number $location"
-    }
+    override fun toString() = "$number $headsign"
 
-    private val nextStop: Stop?
-        get() {
-            return stops.find {
-                it.eta != "ARR"
-            }
-        }
-
-    val status: String
-        get() {
-            if (!departed) {
-                return "Awaiting departure"
-            }
-            else if (arrived) {
-                return "Arrived"
-            }
-
-            return "Next stop: ${nextStop?.name} in ${
-                Html.fromHtml(
-                    nextStop?.eta,
-                    Html.FROM_HTML_MODE_LEGACY
-                )
-            }"
-        }
+    val nextStop: Stop?
+        get() = stops.find { it.eta != "ARR" }
 
     override fun hashCode(): Int {
         var result = number.hashCode()
@@ -74,14 +51,13 @@ data class Train(
                 null
             }
             val stopsJson = jsonObject.getJSONArray("times")
-            val stops = (0 until stopsJson.length()).map {
-                Stop.fromJson(stopsJson.getJSONObject(it))
+            val stops = ArrayList<Stop>()
+            for (i in 0 until stopsJson.length()) {
+                stops.add(Stop.fromJson(stopsJson.getJSONObject(i)))
             }
             return Train(
-                number =
-                "${jsonObject.optString("number", "")} ${jsonObject.optString("train")} ${
-                    jsonObject.optString("from").toMixedCase()
-                } -> ${jsonObject.optString("to").toMixedCase()}",
+                number = jsonObject.optString("number", ""),
+                headsign = "${jsonObject.optString("from")} -> ${jsonObject.optString("to")}".toMixedCase(),
                 departed = jsonObject.optBoolean("departed"),
                 arrived = jsonObject.optBoolean("arrived"),
                 location = latLon,
