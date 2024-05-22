@@ -41,13 +41,13 @@ import kotlin.math.max
 fun MainScreen(viableViewModel: ViableViewModel) {
     val context = LocalContext.current
     val viableState by viableViewModel.viableState.collectAsState()
-    var routeLine by remember { mutableStateOf(ArrayList<LatLng>()) }
+    var routeLine by remember { mutableStateOf(listOf<LatLng>()) }
     var nextStation by remember { mutableStateOf<Station?>(null) }
     val cameraPositionState = rememberCameraPositionState()
     val selectedTrain = viableState.selectedTrain
     val listState = rememberLazyListState()
 
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         while (true) {
             viableViewModel.downloadData(context)
             delay(30_000)
@@ -55,20 +55,18 @@ fun MainScreen(viableViewModel: ViableViewModel) {
     }
     LaunchedEffect(selectedTrain) {
         selectedTrain?.let { train ->
-            train.location?.let { latLon ->
-                cameraPositionState.move(CameraUpdateFactory.newLatLng(latLon.toLatLng()))
+            train.location?.let {
+                cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
             }
             viableViewModel.getLine(train) { shapes ->
-                routeLine = ArrayList(shapes.map { shape ->
+                routeLine = shapes.map { shape ->
                     LatLng(shape.lat, shape.lon)
-                })
+                }.toList()
             }
             viableViewModel.getNextStation(train) {
                 nextStation = it
             }
-            listState.scrollToItem(max(0, train.stops.indexOfFirst {
-                it == train.nextStop
-            }))
+            listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
         }
     }
     Scaffold(
@@ -106,7 +104,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     )
                     train.location?.let {
                         Marker(
-                            state = MarkerState(position = it.toLatLng()),
+                            state = MarkerState(position = LatLng(it.lat, it.lon)),
                             title = selectedTrain.toString(),
                             icon = BitmapDescriptorFactory.fromAsset("train_24dp_FILL1_wght300_GRAD0_opsz24.png"),
                             snippet = if (!train.departed) {
