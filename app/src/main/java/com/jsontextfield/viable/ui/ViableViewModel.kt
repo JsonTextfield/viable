@@ -8,9 +8,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.room.Room
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.jsontextfield.viable.Station
-import com.jsontextfield.viable.ViableState
 import com.jsontextfield.viable.entities.Shape
+import com.jsontextfield.viable.entities.Station
 import com.jsontextfield.viable.entities.Train
 import com.jsontextfield.viable.entities.ViaRailDatabase
 import kotlinx.coroutines.CoroutineScope

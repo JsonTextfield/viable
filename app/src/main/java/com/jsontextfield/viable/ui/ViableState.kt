@@ -1,4 +1,4 @@
-package com.jsontextfield.viable
+package com.jsontextfield.viable.ui
 
 import com.jsontextfield.viable.entities.Train
 
