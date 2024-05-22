@@ -19,6 +19,7 @@ data class Train(
 
     override fun hashCode(): Int {
         var result = number.hashCode()
+        result = 31 * result + headsign.hashCode()
         result = 31 * result + departed.hashCode()
         result = 31 * result + arrived.hashCode()
         result = 31 * result + (location?.hashCode() ?: 0)
@@ -32,6 +33,7 @@ data class Train(
         other as Train
 
         if (number != other.number) return false
+        if (headsign != other.headsign) return false
         if (departed != other.departed) return false
         if (arrived != other.arrived) return false
         if (location != other.location) return false

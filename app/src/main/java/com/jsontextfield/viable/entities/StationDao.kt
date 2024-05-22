@@ -2,7 +2,6 @@ package com.jsontextfield.viable.entities
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.jsontextfield.viable.Station
 
 @Dao
 interface StationDao {
