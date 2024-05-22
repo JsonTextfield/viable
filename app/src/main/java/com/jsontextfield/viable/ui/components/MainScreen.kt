@@ -4,6 +4,7 @@ import android.text.Html
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
@@ -30,9 +31,10 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.jsontextfield.viable.R
-import com.jsontextfield.viable.Station
+import com.jsontextfield.viable.entities.Station
 import com.jsontextfield.viable.ui.ViableViewModel
 import kotlinx.coroutines.delay
+import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +45,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
     var nextStation by remember { mutableStateOf<Station?>(null) }
     val cameraPositionState = rememberCameraPositionState()
     val selectedTrain = viableState.selectedTrain
+    val listState = rememberLazyListState()
 
     LaunchedEffect(true) {
         while (true) {
@@ -63,6 +66,9 @@ fun MainScreen(viableViewModel: ViableViewModel) {
             viableViewModel.getNextStation(train) {
                 nextStation = it
             }
+            listState.scrollToItem(max(0, train.stops.indexOfFirst {
+                it == train.nextStop
+            }))
         }
     }
     Scaffold(
@@ -129,7 +135,11 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     )
                 }
             }
-            StopsList(stops = selectedTrain?.stops ?: emptyList(), modifier = Modifier.weight(.3f))
+            StopsList(
+                stops = selectedTrain?.stops ?: emptyList(),
+                modifier = Modifier.weight(.3f),
+                listState = listState,
+            )
         }
     }
 }

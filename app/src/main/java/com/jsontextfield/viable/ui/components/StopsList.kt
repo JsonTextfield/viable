@@ -2,7 +2,9 @@ package com.jsontextfield.viable.ui.components
 
 import android.text.Html
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,8 +15,12 @@ import com.jsontextfield.viable.R
 import com.jsontextfield.viable.entities.Stop
 
 @Composable
-fun StopsList(stops: List<Stop>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
+fun StopsList(
+    stops: List<Stop>,
+    modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
+) {
+    LazyColumn(modifier = modifier, state = listState) {
         items(stops) { stop ->
             ListItem(
                 modifier = Modifier.alpha(if (stop.eta != "ARR") 1f else 0.5f),
@@ -26,7 +32,8 @@ fun StopsList(stops: List<Stop>, modifier: Modifier = Modifier) {
                         }
                         else {
                             stringResource(
-                                id = R.string.arrives_in, Html.fromHtml(
+                                id = R.string.arrives_in,
+                                Html.fromHtml(
                                     stop.eta,
                                     Html.FROM_HTML_MODE_LEGACY
                                 ),
