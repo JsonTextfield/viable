@@ -3,6 +3,7 @@ package com.jsontextfield.viable.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.room.Room
@@ -10,14 +11,15 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.jsontextfield.viable.entities.Shape
 import com.jsontextfield.viable.entities.Station
+import com.jsontextfield.viable.entities.Stop
 import com.jsontextfield.viable.entities.Train
 import com.jsontextfield.viable.entities.ViaRailDatabase
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ViableViewModel(private val db: ViaRailDatabase) : ViewModel() {
     private var _viableState = MutableStateFlow(ViableState())
@@ -30,17 +32,19 @@ class ViableViewModel(private val db: ViaRailDatabase) : ViewModel() {
         }
     }
 
-    fun getNextStation(train: Train, callback: (station: Station?) -> Unit = {}) {
-        train.nextStop?.let { nextStop ->
-            CoroutineScope(Dispatchers.IO).launch {
-                callback(db.stationDao.getStation(nextStop.id))
+    fun getStation(stop: Stop, callback: (station: Station?) -> Unit = {}) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                callback(db.stationDao.getStation(stop.id))
             }
         }
     }
 
     fun getLine(train: Train, callback: (shapes: List<Shape>) -> Unit = {}) {
-        CoroutineScope(Dispatchers.IO).launch {
-            callback(db.shapeDao.getPoints(train.number.split(" ").first()))
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                callback(db.shapeDao.getPoints(train.number.split(" ").first()))
+            }
         }
     }
 
@@ -55,7 +59,7 @@ class ViableViewModel(private val db: ViaRailDatabase) : ViewModel() {
             }.toList()
             loadData(data)
         }, {
-            loadData(ArrayList())
+            loadData(emptyList())
         })
         Volley.newRequestQueue(context).add(jsonObjectRequest)
     }

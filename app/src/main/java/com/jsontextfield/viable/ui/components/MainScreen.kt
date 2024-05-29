@@ -21,6 +21,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.RoundCap
@@ -42,7 +43,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
     val context = LocalContext.current
     val viableState by viableViewModel.viableState.collectAsState()
     var routeLine by remember { mutableStateOf(listOf<LatLng>()) }
-    var nextStation by remember { mutableStateOf<Station?>(null) }
+    var selectedStation by remember { mutableStateOf<Station?>(null) }
     val cameraPositionState = rememberCameraPositionState()
     val selectedTrain = viableState.selectedTrain
     val listState = rememberLazyListState()
@@ -63,8 +64,10 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     LatLng(shape.lat, shape.lon)
                 }.toList()
             }
-            viableViewModel.getNextStation(train) {
-                nextStation = it
+            train.nextStop?.let { stop ->
+                viableViewModel.getStation(stop) {
+                    selectedStation = it
+                }
             }
             listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
         }
@@ -99,6 +102,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     Polyline(
                         endCap = RoundCap(),
                         startCap = RoundCap(),
+                        jointType = JointType.ROUND,
                         points = routeLine,
                         color = colorResource(id = R.color.primary_colour),
                     )
@@ -125,7 +129,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                         )
                     }
                 }
-                nextStation?.let {
+                selectedStation?.let {
                     Marker(
                         state = MarkerState(position = LatLng(it.lat, it.lon)),
                         title = it.name,
