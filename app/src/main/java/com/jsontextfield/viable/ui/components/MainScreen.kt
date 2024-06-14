@@ -50,7 +50,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
 
     LaunchedEffect(Unit) {
         while (true) {
-            viableViewModel.downloadData(context)
+            viableViewModel.downloadData()
             delay(30_000)
         }
     }

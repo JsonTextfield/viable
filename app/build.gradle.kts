@@ -61,13 +61,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    val room_version = "2.5.0"
+    val roomVersion = "2.5.0"
 
-    implementation("androidx.room:room-ktx:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     implementation(libs.play.services.maps)
-    implementation(libs.volley)
+    implementation(libs.okhttp)
     implementation(libs.maps.compose)
 
     testImplementation(libs.junit)
