@@ -32,7 +32,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.jsontextfield.viable.R
-import com.jsontextfield.viable.entities.Station
+import com.jsontextfield.viable.data.entities.Station
 import com.jsontextfield.viable.ui.ViableViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.max
@@ -41,11 +41,11 @@ import kotlin.math.max
 @Composable
 fun MainScreen(viableViewModel: ViableViewModel) {
     val context = LocalContext.current
-    val viableState by viableViewModel.viableState.collectAsState()
+    val trains by viableViewModel.trains.collectAsState()
+    val selectedTrain by viableViewModel.selectedTrain.collectAsState()
     var routeLine by remember { mutableStateOf(listOf<LatLng>()) }
     var selectedStation by remember { mutableStateOf<Station?>(null) }
     val cameraPositionState = rememberCameraPositionState()
-    val selectedTrain = viableState.selectedTrain
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
@@ -59,15 +59,11 @@ fun MainScreen(viableViewModel: ViableViewModel) {
             train.location?.let {
                 cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
             }
-            viableViewModel.getLine(train) { shapes ->
-                routeLine = shapes.map { shape ->
-                    LatLng(shape.lat, shape.lon)
-                }.toList()
+            routeLine = viableViewModel.getLine(train).map { shape ->
+                LatLng(shape.lat, shape.lon)
             }
             train.nextStop?.let { stop ->
-                viableViewModel.getStation(stop) {
-                    selectedStation = it
-                }
+                selectedStation = viableViewModel.getStation(stop)
             }
             listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
         }
@@ -76,7 +72,10 @@ fun MainScreen(viableViewModel: ViableViewModel) {
         topBar = {
             TopAppBar(
                 title = {
-                    TrainComboBox(items = viableState.trains, selectedItem = selectedTrain) {
+                    TrainComboBox(
+                        items = trains,
+                        selectedItem = selectedTrain,
+                    ) {
                         viableViewModel.onTrainSelected(it)
                     }
                 },
