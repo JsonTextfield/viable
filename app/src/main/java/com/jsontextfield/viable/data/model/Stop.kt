@@ -1,4 +1,4 @@
-package com.jsontextfield.viable.entities
+package com.jsontextfield.viable.data.model
 
 import org.json.JSONObject
 import java.time.format.DateTimeFormatter

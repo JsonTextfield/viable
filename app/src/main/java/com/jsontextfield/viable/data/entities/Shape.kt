@@ -1,4 +1,4 @@
-package com.jsontextfield.viable.entities
+package com.jsontextfield.viable.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
