@@ -12,12 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import com.jsontextfield.viable.R
-import com.jsontextfield.viable.entities.Stop
+import com.jsontextfield.viable.data.model.Stop
 
 @Composable
 fun StopsList(
-    stops: List<Stop>,
     modifier: Modifier = Modifier,
+    stops: List<Stop> = emptyList(),
     listState: LazyListState = rememberLazyListState(),
 ) {
     LazyColumn(modifier = modifier, state = listState) {
