@@ -10,15 +10,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.JointType
@@ -32,7 +29,6 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.jsontextfield.viable.R
-import com.jsontextfield.viable.data.entities.Station
 import com.jsontextfield.viable.ui.ViableViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.max
@@ -41,17 +37,17 @@ import kotlin.math.max
 @Composable
 fun MainScreen(viableViewModel: ViableViewModel) {
     val context = LocalContext.current
-    val trains by viableViewModel.trains.collectAsState()
-    val selectedTrain by viableViewModel.selectedTrain.collectAsState()
-    var routeLine by remember { mutableStateOf(listOf<LatLng>()) }
-    var selectedStation by remember { mutableStateOf<Station?>(null) }
+    val trains by viableViewModel.trains.collectAsStateWithLifecycle()
+    val selectedTrain by viableViewModel.selectedTrain.collectAsStateWithLifecycle()
+    val selectedStation by viableViewModel.selectedStation.collectAsStateWithLifecycle()
+    val routeLine by viableViewModel.routeLine.collectAsStateWithLifecycle()
     val cameraPositionState = rememberCameraPositionState()
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
         while (true) {
             viableViewModel.downloadData()
-            delay(30_000)
+            delay(10_000)
         }
     }
     LaunchedEffect(selectedTrain) {
@@ -59,12 +55,8 @@ fun MainScreen(viableViewModel: ViableViewModel) {
             train.location?.let {
                 cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
             }
-            routeLine = viableViewModel.getLine(train).map { shape ->
-                LatLng(shape.lat, shape.lon)
-            }
-            train.nextStop?.let { stop ->
-                selectedStation = viableViewModel.getStation(stop)
-            }
+            viableViewModel.getLine()
+            train.nextStop?.let { viableViewModel.onStopSelected(it) }
             listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
         }
     }
@@ -75,9 +67,8 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     TrainComboBox(
                         items = trains,
                         selectedItem = selectedTrain,
-                    ) {
-                        viableViewModel.onTrainSelected(it)
-                    }
+                        onItemSelected = { viableViewModel.onTrainSelected(it) },
+                    )
                 },
             )
         },
@@ -102,7 +93,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                         endCap = RoundCap(),
                         startCap = RoundCap(),
                         jointType = JointType.ROUND,
-                        points = routeLine,
+                        points = routeLine.map { LatLng(it.lat, it.lon) },
                         color = colorResource(id = R.color.primary_colour),
                     )
                     train.location?.let {
@@ -132,7 +123,6 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     Marker(
                         state = MarkerState(position = LatLng(it.lat, it.lon)),
                         title = it.name,
-                        icon = BitmapDescriptorFactory.fromAsset("things_to_do_24dp_FILL1_wght300_GRAD0_opsz24.png"),
                     )
                 }
             }
@@ -140,6 +130,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                 stops = selectedTrain?.stops ?: emptyList(),
                 modifier = Modifier.weight(.3f),
                 listState = listState,
+                onItemClick = { viableViewModel.onStopSelected(it) }
             )
         }
     }
