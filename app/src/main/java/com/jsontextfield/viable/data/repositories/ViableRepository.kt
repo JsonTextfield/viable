@@ -8,17 +8,17 @@ import com.jsontextfield.viable.network.Downloader
 import kotlinx.coroutines.flow.Flow
 
 class ViableRepository(
-    private val db: ViaRailDatabase,
-) {
-    suspend fun getData(): List<Train> {
+    private val db: ViaRailDatabase
+) : Repository {
+    override suspend fun getData(): List<Train> {
         return Downloader.downloadTrains()
     }
 
-    suspend fun getStation(id: String): Flow<Station> {
+    override suspend fun getStation(id: String): Flow<Station> {
         return db.stationDao.getStation(id)
     }
 
-    suspend fun getLine(id: String): Flow<List<Shape>> {
+    override suspend fun getLine(id: String): Flow<List<Shape>> {
         return db.shapeDao.getPoints(id)
     }
 
