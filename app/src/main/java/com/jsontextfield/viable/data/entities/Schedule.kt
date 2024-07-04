@@ -1,4 +1,4 @@
-package com.jsontextfield.viable.entities
+package com.jsontextfield.viable.data.entities
 
 import android.icu.text.SimpleDateFormat
 import androidx.compose.ui.text.intl.Locale

@@ -1,11 +1,10 @@
-package com.jsontextfield.viable
+package com.jsontextfield.viable.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import com.jsontextfield.viable.ui.ViableViewModel
 import com.jsontextfield.viable.ui.components.MainScreen
 import com.jsontextfield.viable.ui.theme.ViableTheme
 

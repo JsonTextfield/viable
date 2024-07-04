@@ -1,4 +1,4 @@
-package com.jsontextfield.viable.entities
+package com.jsontextfield.viable.data.model
 
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
@@ -16,30 +16,6 @@ data class Train(
 
     val nextStop: Stop?
         get() = stops.find { it.eta != "ARR" }
-
-    override fun hashCode(): Int {
-        var result = number.hashCode()
-        result = 31 * result + headsign.hashCode()
-        result = 31 * result + departed.hashCode()
-        result = 31 * result + arrived.hashCode()
-        result = 31 * result + (location?.hashCode() ?: 0)
-        return result
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Train
-
-        if (number != other.number) return false
-        if (headsign != other.headsign) return false
-        if (departed != other.departed) return false
-        if (arrived != other.arrived) return false
-        if (location != other.location) return false
-
-        return true
-    }
 
     companion object {
         fun fromJson(jsonObject: JSONObject): Train {

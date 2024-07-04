@@ -19,14 +19,14 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.jsontextfield.viable.R
-import com.jsontextfield.viable.entities.Train
+import com.jsontextfield.viable.data.model.Train
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrainComboBox(
-    items: List<Train>,
-    selectedItem: Train?,
-    onItemSelected: (Train) -> Unit
+    items: List<Train> = emptyList(),
+    selectedItem: Train? = null,
+    onItemSelected: (Train) -> Unit = {},
 ) {
     var expanded by remember { mutableStateOf(false) }
 
