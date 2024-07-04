@@ -47,7 +47,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
     LaunchedEffect(Unit) {
         while (true) {
             viableViewModel.downloadData()
-            delay(10_000)
+            delay(30_000)
         }
     }
     LaunchedEffect(selectedTrain) {
