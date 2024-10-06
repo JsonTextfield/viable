@@ -14,11 +14,11 @@ class ViableRepository(
         return Downloader.downloadTrains()
     }
 
-    override suspend fun getStation(id: String): Flow<Station> {
+    override fun getStation(id: String): Flow<Station> {
         return db.stationDao.getStation(id)
     }
 
-    override suspend fun getLine(id: String): Flow<List<Shape>> {
+    override fun getLine(id: String): Flow<List<Shape>> {
         return db.shapeDao.getPoints(id)
     }
 

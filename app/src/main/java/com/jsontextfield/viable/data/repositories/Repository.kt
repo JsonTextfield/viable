@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
     suspend fun getData(): List<Train>
 
-    suspend fun getStation(id: String): Flow<Station>
+    fun getStation(id: String): Flow<Station>
 
-    suspend fun getLine(id: String): Flow<List<Shape>>
+    fun getLine(id: String): Flow<List<Shape>>
 }
