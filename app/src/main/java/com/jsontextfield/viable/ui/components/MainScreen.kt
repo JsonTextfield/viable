@@ -100,7 +100,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                         Marker(
                             state = MarkerState(position = LatLng(it.lat, it.lon)),
                             title = selectedTrain.toString(),
-                            icon = BitmapDescriptorFactory.fromAsset("train_24dp_FILL1_wght300_GRAD0_opsz24.png"),
+                            icon = BitmapDescriptorFactory.fromAsset("train.png"),
                             snippet = if (!train.departed) {
                                 stringResource(id = R.string.departed)
                             }
@@ -121,6 +121,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                 }
                 selectedStation?.let {
                     Marker(
+                        icon = BitmapDescriptorFactory.fromAsset("station.png"),
                         state = MarkerState(position = LatLng(it.lat, it.lon)),
                         title = it.name,
                     )
