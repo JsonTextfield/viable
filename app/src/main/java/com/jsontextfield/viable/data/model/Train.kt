@@ -5,12 +5,12 @@ import androidx.compose.ui.text.toLowerCase
 import org.json.JSONObject
 
 data class Train(
-    val number: String,
-    val headsign: String,
-    val departed: Boolean,
-    val arrived: Boolean,
-    val location: LatLon?,
-    val stops: List<Stop>,
+    val number: String = "",
+    val headsign: String = "",
+    val departed: Boolean = false,
+    val arrived: Boolean = false,
+    val location: LatLon? = null,
+    val stops: List<Stop> = emptyList(),
 ) {
     override fun toString() = "$number $headsign"
 

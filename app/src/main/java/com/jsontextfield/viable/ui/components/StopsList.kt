@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.model.Stop
 
@@ -48,4 +49,14 @@ fun StopsList(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun StopListPreview() {
+    StopsList(
+        stops = (1 until 10).map {
+            Stop("Stop $it", "${it * 7}m")
+        },
+    )
 }
