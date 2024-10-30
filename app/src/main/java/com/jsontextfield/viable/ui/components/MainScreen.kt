@@ -44,7 +44,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                 cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
             }
             viableViewModel.getLine()
-            train.nextStop?.let { viableViewModel.onStopSelected(it) }
+            train.nextStop?.let(viableViewModel::onStopSelected)
             listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
         }
     }
@@ -56,7 +56,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                         TrainComboBox(
                             items = trains,
                             selectedItem = selectedTrain,
-                            onItemSelected = { viableViewModel.onTrainSelected(it) },
+                            onItemSelected = viableViewModel::onTrainSelected,
                         )
                     },
                 )
@@ -74,7 +74,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     stops = selectedTrain?.stops ?: emptyList(),
                     modifier = Modifier.weight(.3f),
                     listState = listState,
-                    onItemClick = { viableViewModel.onStopSelected(it) }
+                    onItemClick = viableViewModel::onStopSelected
                 )
             }
         }
@@ -86,12 +86,12 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     TrainComboBox(
                         items = trains,
                         selectedItem = selectedTrain,
-                        onItemSelected = { viableViewModel.onTrainSelected(it) },
+                        onItemSelected = viableViewModel::onTrainSelected,
                     )
                     StopsList(
                         stops = selectedTrain?.stops ?: emptyList(),
                         listState = listState,
-                        onItemClick = { viableViewModel.onStopSelected(it) }
+                        onItemClick = viableViewModel::onStopSelected
                     )
                 }
                 ViableMap(
