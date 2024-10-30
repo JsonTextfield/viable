@@ -1,14 +1,11 @@
 package com.jsontextfield.viable.ui
 
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.ui.platform.LocalConfiguration
 import com.jsontextfield.viable.ui.components.MainScreen
-import com.jsontextfield.viable.ui.components.MainScreenLandscape
 import com.jsontextfield.viable.ui.theme.ViableTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,16 +13,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val viableViewModel: ViableViewModel by viewModels { ViableViewModel.ViableViewModelFactory }
         enableEdgeToEdge()
-        setContent {
-            ViableTheme {
-                val configuration = LocalConfiguration.current
-                if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    MainScreenLandscape(viableViewModel)
-                }
-                else {
-                    MainScreen(viableViewModel)
-                }
-            }
-        }
+        setContent { ViableTheme { MainScreen(viableViewModel) } }
     }
 }
