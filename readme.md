@@ -5,7 +5,7 @@
 ## Screenshots
 <table>
 <td>
-<img src="screenshots/Screenshot_1730416767.png" alt="drawing" width="500"/>
-<img src="screenshots\Screenshot_1730416789.png" alt="drawing" width="500"/>
+<img src="screenshots/Screenshot_1730416767.png" alt="drawing" width="800"/>
+<img src="screenshots/Screenshot_1730416789.png" alt="drawing" width="1200"/>
 </td>
 </table>
