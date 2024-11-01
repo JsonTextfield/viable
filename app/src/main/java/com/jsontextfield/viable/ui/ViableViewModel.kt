@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class ViableViewModel(private val repo: Repository) : ViewModel() {
@@ -40,22 +39,13 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
 
     fun onStopSelected(stop: Stop?) {
         viewModelScope.launch {
-            if (stop == null) {
-                _selectedStation.emit(null)
-            }
-            else {
-                repo.getStation(stop.id).collectLatest {
-                    _selectedStation.emit(it)
-                }
-            }
+            _selectedStation.emit(stop?.let { repo.getStation(it.id) })
         }
     }
 
     fun getLine() {
         viewModelScope.launch {
-            repo.getLine(_selectedTrain.value?.number?.split(" ")?.first() ?: "").collectLatest {
-                _routeLine.emit(it)
-            }
+            _routeLine.emit(repo.getLine(_selectedTrain.value?.number?.split(" ")?.first() ?: ""))
         }
     }
 

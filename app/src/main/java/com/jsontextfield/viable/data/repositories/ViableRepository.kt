@@ -5,7 +5,6 @@ import com.jsontextfield.viable.data.entities.Shape
 import com.jsontextfield.viable.data.entities.Station
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.network.Downloader
-import kotlinx.coroutines.flow.Flow
 
 class ViableRepository(
     private val db: ViaRailDatabase
@@ -14,11 +13,11 @@ class ViableRepository(
         return Downloader.downloadTrains()
     }
 
-    override fun getStation(id: String): Flow<Station> {
+    override suspend fun getStation(id: String): Station {
         return db.stationDao.getStation(id)
     }
 
-    override fun getLine(id: String): Flow<List<Shape>> {
+    override suspend fun getLine(id: String): List<Shape> {
         return db.shapeDao.getPoints(id)
     }
 
