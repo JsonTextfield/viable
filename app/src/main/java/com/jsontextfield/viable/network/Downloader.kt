@@ -8,7 +8,6 @@ import okio.IOException
 import org.json.JSONObject
 
 object Downloader {
-    private const val TAG = "Downloader"
     private val client: OkHttpClient by lazy { OkHttpClient() }
 
     fun downloadTrains(): List<Train> {
@@ -29,7 +28,7 @@ object Downloader {
                 return data
             }
         } catch (exception: IOException) {
-            Log.e(TAG, exception.stackTraceToString())
+            Log.e("Downloader", exception.stackTraceToString())
         }
         return emptyList()
     }
