@@ -31,6 +31,9 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
     private var _routeLine: MutableStateFlow<List<Shape>> = MutableStateFlow(emptyList())
     val routeLine: StateFlow<List<Shape>> get() = _routeLine.asStateFlow()
 
+    private var _shouldMoveCamera: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val shouldMoveCamera: StateFlow<Boolean> get() = _shouldMoveCamera.asStateFlow()
+
     fun onTrainSelected(train: Train?) {
         viewModelScope.launch {
             // If the selected train changes, reset the selected station and get the new route line
@@ -38,6 +41,7 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
                 _selectedStation.emit(null)
                 _routeLine.emit(repo.getLine(train?.number?.split(" ")?.first() ?: ""))
             }
+            _shouldMoveCamera.emit(train?.toString() != _selectedTrain.value?.toString())
             _selectedTrain.emit(train)
         }
     }

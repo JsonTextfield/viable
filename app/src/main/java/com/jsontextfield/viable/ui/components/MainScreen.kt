@@ -31,6 +31,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
     val selectedTrain by viableViewModel.selectedTrain.collectAsStateWithLifecycle()
     val selectedStation by viableViewModel.selectedStation.collectAsStateWithLifecycle()
     val routeLine by viableViewModel.routeLine.collectAsStateWithLifecycle()
+    val shouldMoveCamera by viableViewModel.shouldMoveCamera.collectAsStateWithLifecycle()
     val cameraPositionState = rememberCameraPositionState()
     val listState = rememberLazyListState()
 
@@ -40,7 +41,9 @@ fun MainScreen(viableViewModel: ViableViewModel) {
     LaunchedEffect(selectedTrain) {
         selectedTrain?.let { train ->
             train.location?.let {
-                cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                if (shouldMoveCamera) {
+                    cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                }
             }
             // Initial stop selection
             if (selectedStation == null) {
