@@ -42,9 +42,11 @@ fun MainScreen(viableViewModel: ViableViewModel) {
             train.location?.let {
                 cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
             }
-            viableViewModel.getLine()
-            train.nextStop?.let(viableViewModel::onStopSelected)
-            listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
+            // Initial stop selection
+            if (selectedStation == null) {
+                train.nextStop?.let(viableViewModel::onStopSelected)
+                listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
+            }
         }
     }
     if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -73,7 +75,9 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     )
                     RepeatingTimer(
                         30_000L,
-                        modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp),
                         onTimerExpired = viableViewModel::downloadData,
                     )
                 }
@@ -111,7 +115,9 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     )
                     RepeatingTimer(
                         30_000L,
-                        modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp),
                         onTimerExpired = viableViewModel::downloadData,
                     )
                 }

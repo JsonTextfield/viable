@@ -33,6 +33,11 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
 
     fun onTrainSelected(train: Train?) {
         viewModelScope.launch {
+            // If the selected train changes, reset the selected station and get the new route line
+            if (train?.toString() != _selectedTrain.value?.toString()) {
+                _selectedStation.emit(null)
+                _routeLine.emit(repo.getLine(train?.number?.split(" ")?.first() ?: ""))
+            }
             _selectedTrain.emit(train)
         }
     }
@@ -43,18 +48,14 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
-    fun getLine() {
-        viewModelScope.launch {
-            _routeLine.emit(repo.getLine(_selectedTrain.value?.number?.split(" ")?.first() ?: ""))
-        }
-    }
-
     fun downloadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val data = repo.getData()
             _trains.emit(data)
-            val train: Train? = data.find { it.number == selectedTrain.value?.number }
-                ?: data.find { it.location != null } ?: data.firstOrNull()
+            val train: Train? =
+                data.find { it.number == selectedTrain.value?.number }
+                    ?: data.find { it.location != null }
+                    ?: data.firstOrNull()
             onTrainSelected(train)
         }
     }
