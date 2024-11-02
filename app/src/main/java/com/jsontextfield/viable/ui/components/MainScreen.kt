@@ -79,6 +79,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                 }
                 StopsList(
                     stops = selectedTrain?.stops ?: emptyList(),
+                    selectedStation = selectedStation,
                     modifier = Modifier.weight(.3f),
                     listState = listState,
                     onItemClick = viableViewModel::onStopSelected

@@ -7,18 +7,21 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.jsontextfield.viable.R
+import com.jsontextfield.viable.data.entities.Station
 import com.jsontextfield.viable.data.model.Stop
 
 @Composable
 fun StopsList(
     modifier: Modifier = Modifier,
+    selectedStation: Station? = null,
     stops: List<Stop> = emptyList(),
     listState: LazyListState = rememberLazyListState(),
     onItemClick: (Stop) -> Unit = {},
@@ -29,9 +32,15 @@ fun StopsList(
                 modifier = Modifier
                     .alpha(if (stop.eta != "ARR") 1f else 0.5f)
                     .clickable { onItemClick(stop) },
-                headlineContent = { Text(stop.name) },
+                headlineContent = {
+                    SelectText(
+                        stop.name,
+                        MaterialTheme.colorScheme.onSurface,
+                        stop.id == selectedStation?.code
+                    )
+                },
                 supportingContent = {
-                    Text(
+                    SelectText(
                         if (stop.eta == "ARR") {
                             stringResource(id = R.string.departed)
                         }
@@ -43,7 +52,9 @@ fun StopsList(
                                     Html.FROM_HTML_MODE_LEGACY
                                 ),
                             )
-                        }
+                        },
+                        ListItemDefaults.colors().supportingTextColor,
+                        stop.id == selectedStation?.code
                     )
                 },
             )
