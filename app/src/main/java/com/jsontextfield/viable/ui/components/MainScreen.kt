@@ -27,13 +27,14 @@ import kotlin.math.max
 @Composable
 fun MainScreen(viableViewModel: ViableViewModel) {
     val configuration = LocalConfiguration.current
-    val trains by viableViewModel.trains.collectAsStateWithLifecycle()
-    val selectedTrain by viableViewModel.selectedTrain.collectAsStateWithLifecycle()
-    val selectedStation by viableViewModel.selectedStation.collectAsStateWithLifecycle()
-    val routeLine by viableViewModel.routeLine.collectAsStateWithLifecycle()
-    val shouldMoveCamera by viableViewModel.shouldMoveCamera.collectAsStateWithLifecycle()
     val cameraPositionState = rememberCameraPositionState()
     val listState = rememberLazyListState()
+    val viableState by viableViewModel.viableState.collectAsStateWithLifecycle()
+    val selectedTrain = viableState.selectedTrain
+    val shouldMoveCamera = viableState.shouldMoveCamera
+    val selectedStation = viableState.selectedStation
+    val trains = viableState.trains
+    val routeLine = viableState.routeLine
 
     LaunchedEffect(Unit) {
         viableViewModel.downloadData()
