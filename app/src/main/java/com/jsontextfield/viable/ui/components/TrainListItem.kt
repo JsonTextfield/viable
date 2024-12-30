@@ -2,7 +2,8 @@ package com.jsontextfield.viable.ui.components
 
 import android.text.Html
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -12,14 +13,21 @@ import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.model.Train
 
 @Composable
-fun TrainListItem(train: Train) {
+fun TrainListItem(
+    train: Train,
+    isSelected: Boolean = false,
+) {
     ListItem(
         modifier = Modifier.alpha(if (train.location != null) 1f else 0.5f),
         headlineContent = {
-            Text(train.toString())
+            SelectText(
+                train.toString(),
+                MaterialTheme.colorScheme.onSurface,
+                isSelected
+            )
         },
         supportingContent = {
-            Text(
+            SelectText(
                 if (train.nextStop != null) {
                     stringResource(
                         id = R.string.next_stop, train.nextStop?.name ?: "",
@@ -35,6 +43,8 @@ fun TrainListItem(train: Train) {
                 else {
                     ""
                 },
+                ListItemDefaults.colors().supportingTextColor,
+                isSelected
             )
         },
     )

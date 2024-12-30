@@ -1,6 +1,7 @@
 package com.jsontextfield.viable.ui.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,8 +12,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
@@ -25,27 +31,39 @@ import kotlin.math.max
 @Composable
 fun MainScreen(viableViewModel: ViableViewModel) {
     val configuration = LocalConfiguration.current
-    val trains by viableViewModel.trains.collectAsStateWithLifecycle()
-    val selectedTrain by viableViewModel.selectedTrain.collectAsStateWithLifecycle()
-    val selectedStation by viableViewModel.selectedStation.collectAsStateWithLifecycle()
-    val routeLine by viableViewModel.routeLine.collectAsStateWithLifecycle()
     val cameraPositionState = rememberCameraPositionState()
     val listState = rememberLazyListState()
+    val viableState by viableViewModel.viableState.collectAsStateWithLifecycle()
+    val selectedTrain = viableState.selectedTrain
+    val shouldMoveCamera = viableState.shouldMoveCamera
+    val selectedStation = viableState.selectedStation
+    val trains = viableState.trains
+    val routeLine = viableState.routeLine
 
-    LaunchedEffect(Unit) {
-        while (true) {
+    var timeRemaining by remember { mutableIntStateOf(0) }
+    LaunchedEffect(timeRemaining) {
+        if (timeRemaining <= 0) {
             viableViewModel.downloadData()
-            delay(30_000)
+            timeRemaining = 30_000
+        }
+        else {
+            delay(1000)
+            timeRemaining -= 1000
         }
     }
+
     LaunchedEffect(selectedTrain) {
         selectedTrain?.let { train ->
             train.location?.let {
-                cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                if (shouldMoveCamera) {
+                    cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                }
             }
-            viableViewModel.getLine()
-            train.nextStop?.let(viableViewModel::onStopSelected)
-            listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
+            // Initial stop selection
+            if (selectedStation == null) {
+                train.nextStop?.let(viableViewModel::onStopSelected)
+                listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
+            }
         }
     }
     if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -63,15 +81,25 @@ fun MainScreen(viableViewModel: ViableViewModel) {
             },
         ) { innerPadding ->
             Column(modifier = Modifier.padding(innerPadding)) {
-                ViableMap(
+                Box(
                     modifier = Modifier.weight(.5f),
-                    cameraPositionState = cameraPositionState,
-                    selectedTrain = selectedTrain,
-                    selectedStation = selectedStation,
-                    routeLine = routeLine,
-                )
+                ) {
+                    ViableMap(
+                        cameraPositionState = cameraPositionState,
+                        selectedTrain = selectedTrain,
+                        selectedStation = selectedStation,
+                        routeLine = routeLine,
+                    )
+                    CountdownTimer(
+                        timeRemaining = timeRemaining,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp),
+                    )
+                }
                 StopsList(
                     stops = selectedTrain?.stops ?: emptyList(),
+                    selectedStation = selectedStation,
                     modifier = Modifier.weight(.3f),
                     listState = listState,
                     onItemClick = viableViewModel::onStopSelected
@@ -90,17 +118,25 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     )
                     StopsList(
                         stops = selectedTrain?.stops ?: emptyList(),
+                        selectedStation = selectedStation,
                         listState = listState,
                         onItemClick = viableViewModel::onStopSelected
                     )
                 }
-                ViableMap(
-                    modifier = Modifier.weight(2f),
-                    cameraPositionState = cameraPositionState,
-                    selectedTrain = selectedTrain,
-                    selectedStation = selectedStation,
-                    routeLine = routeLine
-                )
+                Box(modifier = Modifier.weight(2f)) {
+                    ViableMap(
+                        cameraPositionState = cameraPositionState,
+                        selectedTrain = selectedTrain,
+                        selectedStation = selectedStation,
+                        routeLine = routeLine
+                    )
+                    CountdownTimer(
+                        timeRemaining = timeRemaining,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp),
+                    )
+                }
             }
         }
     }

@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.jsontextfield.viable.ViableApplication
-import com.jsontextfield.viable.data.entities.Shape
-import com.jsontextfield.viable.data.entities.Station
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.data.repositories.Repository
@@ -15,46 +13,57 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ViableViewModel(private val repo: Repository) : ViewModel() {
 
-    private var _selectedTrain: MutableStateFlow<Train?> = MutableStateFlow(null)
-    val selectedTrain: StateFlow<Train?> get() = _selectedTrain.asStateFlow()
-
-    private var _selectedStation: MutableStateFlow<Station?> = MutableStateFlow(null)
-    val selectedStation: StateFlow<Station?> get() = _selectedStation.asStateFlow()
-
-    private var _trains: MutableStateFlow<List<Train>> = MutableStateFlow(emptyList())
-    val trains: StateFlow<List<Train>> get() = _trains.asStateFlow()
-
-    private var _routeLine: MutableStateFlow<List<Shape>> = MutableStateFlow(emptyList())
-    val routeLine: StateFlow<List<Shape>> get() = _routeLine.asStateFlow()
+    private var _viableState: MutableStateFlow<ViableState> = MutableStateFlow(ViableState())
+    val viableState: StateFlow<ViableState> get() = _viableState.asStateFlow()
 
     fun onTrainSelected(train: Train?) {
         viewModelScope.launch {
-            _selectedTrain.emit(train)
+            _viableState.update {
+                // If the selected train changes, reset the selected station and get the new route line
+                val selectedTrainChanged =
+                    train?.toString() != viableState.value.selectedTrain?.toString()
+                it.copy(
+                    selectedTrain = train,
+                    shouldMoveCamera = selectedTrainChanged,
+                    selectedStation = if (selectedTrainChanged) null else it.selectedStation,
+                    routeLine = if (selectedTrainChanged) {
+                        repo.getLine(train?.number?.split(" ")?.first() ?: "")
+                    }
+                    else {
+                        it.routeLine
+                    },
+                )
+            }
         }
     }
 
     fun onStopSelected(stop: Stop?) {
         viewModelScope.launch {
-            _selectedStation.emit(stop?.let { repo.getStation(it.id) })
-        }
-    }
-
-    fun getLine() {
-        viewModelScope.launch {
-            _routeLine.emit(repo.getLine(_selectedTrain.value?.number?.split(" ")?.first() ?: ""))
+            _viableState.update {
+                it.copy(
+                    selectedStation = stop?.let { repo.getStation(it.id) }
+                )
+            }
         }
     }
 
     fun downloadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val data = repo.getData()
-            _trains.emit(data)
-            val train: Train? = data.find { it.number == selectedTrain.value?.number }
-                ?: data.find { it.location != null } ?: data.firstOrNull()
+            _viableState.update {
+                it.copy(
+                    trains = data
+                )
+            }
+            val train: Train? =
+                data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
+                    ?: data.firstOrNull { it.location != null }
+                    ?: data.firstOrNull()
             onTrainSelected(train)
         }
     }

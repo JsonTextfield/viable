@@ -53,7 +53,7 @@ fun TrainComboBox(
                 DropdownMenuItem(
                     contentPadding = PaddingValues(0.dp),
                     enabled = train.location != null,
-                    text = { TrainListItem(train) },
+                    text = { TrainListItem(train, selectedItem == train) },
                     onClick = {
                         onItemSelected(train)
                         expanded = false

@@ -69,7 +69,7 @@ fun ViableMap(
                         stringResource(
                             id = R.string.next_stop, train.nextStop?.name ?: "",
                             Html.fromHtml(
-                                train.nextStop?.eta,
+                                train.nextStop?.eta ?: "",
                                 Html.FROM_HTML_MODE_LEGACY
                             ),
                         )
