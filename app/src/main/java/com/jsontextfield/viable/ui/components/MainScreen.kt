@@ -12,6 +12,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -21,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.jsontextfield.viable.ui.ViableViewModel
+import kotlinx.coroutines.delay
 import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,9 +40,18 @@ fun MainScreen(viableViewModel: ViableViewModel) {
     val trains = viableState.trains
     val routeLine = viableState.routeLine
 
-    LaunchedEffect(Unit) {
-        viableViewModel.downloadData()
+    var timeRemaining by remember { mutableIntStateOf(0) }
+    LaunchedEffect(timeRemaining) {
+        if (timeRemaining <= 0) {
+            viableViewModel.downloadData()
+            timeRemaining = 30_000
+        }
+        else {
+            delay(1000)
+            timeRemaining -= 1000
+        }
     }
+
     LaunchedEffect(selectedTrain) {
         selectedTrain?.let { train ->
             train.location?.let {
@@ -77,12 +90,11 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                         selectedStation = selectedStation,
                         routeLine = routeLine,
                     )
-                    RepeatingTimer(
-                        30_000L,
+                    CountdownTimer(
+                        timeRemaining = timeRemaining,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(4.dp),
-                        onTimerExpired = viableViewModel::downloadData,
                     )
                 }
                 StopsList(
@@ -118,12 +130,11 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                         selectedStation = selectedStation,
                         routeLine = routeLine
                     )
-                    RepeatingTimer(
-                        30_000L,
+                    CountdownTimer(
+                        timeRemaining = timeRemaining,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(4.dp),
-                        onTimerExpired = viableViewModel::downloadData,
                     )
                 }
             }
