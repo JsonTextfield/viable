@@ -10,6 +10,8 @@ import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.data.repositories.Repository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +22,32 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
 
     private var _viableState: MutableStateFlow<ViableState> = MutableStateFlow(ViableState())
     val viableState: StateFlow<ViableState> get() = _viableState.asStateFlow()
+
+    private var _timeRemaining: MutableStateFlow<Int> = MutableStateFlow(0)
+    val timeRemaining: StateFlow<Int> = _timeRemaining.asStateFlow()
+
+    private var timerJob: Job? = null
+
+    fun start() {
+        timerJob = timerJob ?: viewModelScope.launch {
+            while (true) {
+                if (timeRemaining.value <= 0) {
+                    downloadData()
+                    _timeRemaining.value = 30_000
+                }
+                else {
+                    delay(1000)
+                    _timeRemaining.value -= 1000
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        timerJob?.cancel()
+        timerJob = null
+        super.onCleared()
+    }
 
     fun onTrainSelected(train: Train?) {
         viewModelScope.launch {
@@ -52,7 +80,7 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
-    fun downloadData() {
+    private fun downloadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val data = repo.getData()
             _viableState.update {
