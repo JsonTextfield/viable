@@ -2,7 +2,7 @@ package com.jsontextfield.viable.data.database
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.jsontextfield.viable.data.entities.Shape
+import com.jsontextfield.viable.data.database.entities.Shape
 
 @Dao
 interface ShapeDao {

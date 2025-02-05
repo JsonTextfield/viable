@@ -1,7 +1,5 @@
-package com.jsontextfield.viable.data.entities
+package com.jsontextfield.viable.data.database.entities
 
-import android.icu.text.SimpleDateFormat
-import androidx.compose.ui.text.intl.Locale
 import org.json.JSONObject
 import java.util.Date
 

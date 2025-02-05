@@ -1,7 +1,7 @@
 package com.jsontextfield.viable.data.repositories
 
-import com.jsontextfield.viable.data.entities.Shape
-import com.jsontextfield.viable.data.entities.Station
+import com.jsontextfield.viable.data.database.entities.Shape
+import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Train
 
 interface ITrainRepository {
