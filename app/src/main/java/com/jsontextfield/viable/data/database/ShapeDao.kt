@@ -1,4 +1,4 @@
-package com.jsontextfield.viable.data.dao
+package com.jsontextfield.viable.data.database
 
 import androidx.room.Dao
 import androidx.room.Query

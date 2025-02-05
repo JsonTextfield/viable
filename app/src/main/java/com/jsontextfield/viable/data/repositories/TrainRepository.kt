@@ -6,11 +6,12 @@ import com.jsontextfield.viable.data.entities.Station
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.network.Downloader
 
-class ViableRepository(
-    private val db: ViaRailDatabase
-) : Repository {
+class TrainRepository(
+    private val db: ViaRailDatabase,
+    private val downloader: Downloader,
+) : ITrainRepository {
     override suspend fun getData(): List<Train> {
-        return Downloader.downloadTrains()
+        return downloader.downloadTrains()
     }
 
     override suspend fun getStation(id: String): Station {

@@ -4,7 +4,7 @@ import com.jsontextfield.viable.data.entities.Shape
 import com.jsontextfield.viable.data.entities.Station
 import com.jsontextfield.viable.data.model.Train
 
-interface Repository {
+interface ITrainRepository {
     suspend fun getData(): List<Train>
 
     suspend fun getStation(id: String): Station

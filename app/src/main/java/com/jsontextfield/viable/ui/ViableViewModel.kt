@@ -1,14 +1,10 @@
 package com.jsontextfield.viable.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.jsontextfield.viable.ViableApplication
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
-import com.jsontextfield.viable.data.repositories.Repository
+import com.jsontextfield.viable.data.repositories.ITrainRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ViableViewModel(private val repo: Repository) : ViewModel() {
+class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
     private var _viableState: MutableStateFlow<ViableState> = MutableStateFlow(ViableState())
     val viableState: StateFlow<ViableState> get() = _viableState.asStateFlow()
@@ -93,16 +89,6 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
                     ?: data.firstOrNull { it.location != null }
                     ?: data.firstOrNull()
             onTrainSelected(train)
-        }
-    }
-
-    companion object {
-        val ViableViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application =
-                    checkNotNull(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
-                ViableViewModel((application as ViableApplication).repository)
-            }
         }
     }
 }
