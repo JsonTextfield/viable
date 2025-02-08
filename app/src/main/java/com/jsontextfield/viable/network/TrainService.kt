@@ -7,8 +7,8 @@ import okhttp3.Request
 import okio.IOException
 import org.json.JSONObject
 
-class Downloader(private val client: OkHttpClient) {
-    fun downloadTrains(): List<Train> {
+class TrainService(private val client: OkHttpClient) {
+    fun getTrains(): List<Train> {
         val url = "https://tsimobile.viarail.ca/data/allData.json"
         val request = Request.Builder().url(url).build()
         try {

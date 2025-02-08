@@ -78,7 +78,7 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
     private fun downloadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val data = repo.getData()
+            val data = repo.getTrains()
             _viableState.update {
                 it.copy(
                     trains = data

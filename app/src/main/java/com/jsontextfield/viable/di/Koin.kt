@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.jsontextfield.viable.data.database.ViaRailDatabase
 import com.jsontextfield.viable.data.repositories.ITrainRepository
 import com.jsontextfield.viable.data.repositories.TrainRepository
-import com.jsontextfield.viable.network.Downloader
+import com.jsontextfield.viable.network.TrainService
 import com.jsontextfield.viable.ui.ViableViewModel
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
@@ -16,7 +16,7 @@ import org.koin.dsl.module
 
 val networkModule = module {
     single<OkHttpClient> { OkHttpClient() }
-    single<Downloader> { Downloader(get<OkHttpClient>()) }
+    single<TrainService> { TrainService(get<OkHttpClient>()) }
 }
 
 val dataModule = module {
@@ -30,7 +30,7 @@ val dataModule = module {
     single<ITrainRepository> {
         TrainRepository(
             get<ViaRailDatabase>(),
-            get<Downloader>(),
+            get<TrainService>(),
         )
     }
 }
