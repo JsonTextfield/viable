@@ -19,8 +19,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.jsontextfield.viable.R
-import com.jsontextfield.viable.data.entities.Shape
-import com.jsontextfield.viable.data.entities.Station
+import com.jsontextfield.viable.data.database.entities.Shape
+import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Train
 
 @Composable

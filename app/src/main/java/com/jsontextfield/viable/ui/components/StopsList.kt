@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.jsontextfield.viable.R
-import com.jsontextfield.viable.data.entities.Station
+import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Stop
 
 @Composable

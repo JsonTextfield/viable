@@ -1,25 +1,49 @@
 package com.jsontextfield.viable.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.jsontextfield.viable.ViableApplication
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
-import com.jsontextfield.viable.data.repositories.Repository
+import com.jsontextfield.viable.data.repositories.ITrainRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ViableViewModel(private val repo: Repository) : ViewModel() {
+class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
     private var _viableState: MutableStateFlow<ViableState> = MutableStateFlow(ViableState())
     val viableState: StateFlow<ViableState> get() = _viableState.asStateFlow()
+
+    private var _timeRemaining: MutableStateFlow<Int> = MutableStateFlow(0)
+    val timeRemaining: StateFlow<Int> = _timeRemaining.asStateFlow()
+
+    private var timerJob: Job? = null
+
+    fun start() {
+        timerJob = timerJob ?: viewModelScope.launch {
+            while (true) {
+                if (timeRemaining.value <= 0) {
+                    downloadData()
+                    _timeRemaining.value = 30_000
+                }
+                else {
+                    delay(1000)
+                    _timeRemaining.value -= 1000
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        timerJob?.cancel()
+        timerJob = null
+        super.onCleared()
+    }
 
     fun onTrainSelected(train: Train?) {
         viewModelScope.launch {
@@ -52,9 +76,9 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
-    fun downloadData() {
+    private fun downloadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val data = repo.getData()
+            val data = repo.getTrains()
             _viableState.update {
                 it.copy(
                     trains = data
@@ -65,16 +89,6 @@ class ViableViewModel(private val repo: Repository) : ViewModel() {
                     ?: data.firstOrNull { it.location != null }
                     ?: data.firstOrNull()
             onTrainSelected(train)
-        }
-    }
-
-    companion object {
-        val ViableViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application =
-                    checkNotNull(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
-                ViableViewModel((application as ViableApplication).repository)
-            }
         }
     }
 }
