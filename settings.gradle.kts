@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Viable"
-include(":app")
+include(":composeApp")
  

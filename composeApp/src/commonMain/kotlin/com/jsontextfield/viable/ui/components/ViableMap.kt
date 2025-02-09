@@ -20,10 +20,10 @@ import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Train
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
-import viable.app.generated.resources.Res
-import viable.app.generated.resources.arrived
-import viable.app.generated.resources.departed
-import viable.app.generated.resources.next_stop
+import viable.composeapp.generated.resources.Res
+import viable.composeapp.generated.resources.arrived
+import viable.composeapp.generated.resources.departed
+import viable.composeapp.generated.resources.next_stop
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
