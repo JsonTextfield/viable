@@ -8,10 +8,11 @@ import com.jsontextfield.viable.data.model.LatLon
 import com.jsontextfield.viable.data.model.Train
 
 @Composable
-expect fun ViableMap(
+actual fun ViableMap(
     position: LatLon,
-    modifier: Modifier = Modifier,
-    selectedTrain: Train? = null,
-    selectedStation: Station? = null,
-    routeLine: List<Shape> = emptyList(),
-)
+    modifier: Modifier,
+    selectedTrain: Train?,
+    selectedStation: Station?,
+    routeLine: List<Shape>,
+) {
+}

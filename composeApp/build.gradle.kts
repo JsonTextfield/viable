@@ -40,6 +40,9 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.ui.tooling.preview)
             implementation(libs.koin.android)
+
+            implementation(libs.play.services.maps)
+            implementation(libs.maps.compose)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -58,9 +61,6 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
-
-            implementation(libs.play.services.maps)
-            implementation(libs.maps.compose)
 
             implementation(libs.androidx.room.runtime)
             //implementation(libs.androidx.room.ktx)

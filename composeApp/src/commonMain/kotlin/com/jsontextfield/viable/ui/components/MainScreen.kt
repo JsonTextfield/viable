@@ -10,10 +10,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-//import com.google.maps.android.compose.rememberCameraPositionState
+import com.jsontextfield.viable.data.model.LatLon
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.ui.ViableState
@@ -29,7 +33,7 @@ fun MainScreen(
     onStopSelected: (Stop?) -> Unit,
     isPortrait: Boolean = true,
 ) {
-    //val cameraPositionState = rememberCameraPositionState()
+    var mapPosition by remember { mutableStateOf(LatLon()) }
     val listState = rememberLazyListState()
     val selectedTrain = viableState.selectedTrain
     val shouldMoveCamera = viableState.shouldMoveCamera
@@ -41,7 +45,7 @@ fun MainScreen(
         selectedTrain?.let { train ->
             train.location?.let {
                 if (shouldMoveCamera) {
-                    //cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                    mapPosition = it
                 }
             }
             // Initial stop selection
@@ -69,12 +73,12 @@ fun MainScreen(
                 Box(
                     modifier = Modifier.weight(.5f),
                 ) {
-//                    ViableMap(
-//                        cameraPositionState = cameraPositionState,
-//                        selectedTrain = selectedTrain,
-//                        selectedStation = selectedStation,
-//                        routeLine = routeLine,
-//                    )
+                    ViableMap(
+                        position = mapPosition,
+                        selectedTrain = selectedTrain,
+                        selectedStation = selectedStation,
+                        routeLine = routeLine,
+                    )
                     CountdownTimer(
                         timeRemaining = timeRemaining,
                         modifier = Modifier
@@ -91,8 +95,7 @@ fun MainScreen(
                 )
             }
         }
-    }
-    else {
+    } else {
         Scaffold { innerPadding ->
             Row(modifier = Modifier.padding(innerPadding)) {
                 Column(Modifier.weight(1f)) {
@@ -109,12 +112,12 @@ fun MainScreen(
                     )
                 }
                 Box(modifier = Modifier.weight(2f)) {
-//                    ViableMap(
-//                        cameraPositionState = cameraPositionState,
-//                        selectedTrain = selectedTrain,
-//                        selectedStation = selectedStation,
-//                        routeLine = routeLine
-//                    )
+                    ViableMap(
+                        position = mapPosition,
+                        selectedTrain = selectedTrain,
+                        selectedStation = selectedStation,
+                        routeLine = routeLine
+                    )
                     CountdownTimer(
                         timeRemaining = timeRemaining,
                         modifier = Modifier
