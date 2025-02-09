@@ -20,6 +20,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.ui.ViableState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +44,7 @@ fun MainScreen(
         selectedTrain?.let { train ->
             train.location?.let {
                 if (shouldMoveCamera) {
-                    cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                    //cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
                 }
             }
             // Initial stop selection
@@ -71,12 +72,12 @@ fun MainScreen(
                 Box(
                     modifier = Modifier.weight(.5f),
                 ) {
-                    ViableMap(
-                        cameraPositionState = cameraPositionState,
-                        selectedTrain = selectedTrain,
-                        selectedStation = selectedStation,
-                        routeLine = routeLine,
-                    )
+//                    ViableMap(
+//                        cameraPositionState = cameraPositionState,
+//                        selectedTrain = selectedTrain,
+//                        selectedStation = selectedStation,
+//                        routeLine = routeLine,
+//                    )
                     CountdownTimer(
                         timeRemaining = timeRemaining,
                         modifier = Modifier
@@ -111,12 +112,12 @@ fun MainScreen(
                     )
                 }
                 Box(modifier = Modifier.weight(2f)) {
-                    ViableMap(
-                        cameraPositionState = cameraPositionState,
-                        selectedTrain = selectedTrain,
-                        selectedStation = selectedStation,
-                        routeLine = routeLine
-                    )
+//                    ViableMap(
+//                        cameraPositionState = cameraPositionState,
+//                        selectedTrain = selectedTrain,
+//                        selectedStation = selectedStation,
+//                        routeLine = routeLine
+//                    )
                     CountdownTimer(
                         timeRemaining = timeRemaining,
                         modifier = Modifier

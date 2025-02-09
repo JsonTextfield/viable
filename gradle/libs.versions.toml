@@ -4,7 +4,7 @@ kotlin = "2.1.0"
 activityCompose = "1.9.3"
 mapsCompose = "4.4.1"
 playServicesMaps = "19.0.0"
-roomVersion = "2.6.1"
+roomVersion = "2.7.0-alpha13"
 koin = "4.0.0"
 ktor = "3.0.3"
 ksp = "2.1.0-1.0.29"
@@ -19,6 +19,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
