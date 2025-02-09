@@ -4,7 +4,6 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -24,11 +23,11 @@ data class Train(
         get() = stops.find { it.eta != "ARR" }
 
     companion object {
-        fun fromJson(jsonObject: JsonObject): Train {
+        fun fromJson(key: String, jsonObject: JsonObject): Train {
             val latLon = if (jsonObject["lat"] != null && jsonObject["lng"] != null) {
                 LatLon(
-                    jsonObject.get("lat")?.jsonPrimitive?.doubleOrNull ?: 0.0,
-                    jsonObject.get("lng")?.jsonPrimitive?.doubleOrNull ?: 0.0,
+                    jsonObject["lat"]?.jsonPrimitive?.doubleOrNull ?: 0.0,
+                    jsonObject["lng"]?.jsonPrimitive?.doubleOrNull ?: 0.0,
                 )
             } else {
                 null
@@ -41,7 +40,7 @@ data class Train(
             val headsign =
                 "${jsonObject["from"]?.jsonPrimitive?.content} -> ${jsonObject["to"]?.jsonPrimitive?.content}".toMixedCase()
             return Train(
-                number = jsonObject["number"]?.jsonPrimitive?.contentOrNull ?: "",
+                number = key,
                 headsign = headsign,
                 departed = jsonObject["departed"]?.jsonPrimitive?.booleanOrNull ?: false,
                 arrived = jsonObject["arrived"]?.jsonPrimitive?.booleanOrNull ?: false,
