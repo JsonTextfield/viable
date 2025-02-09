@@ -7,7 +7,7 @@ import com.jsontextfield.viable.data.repositories.ITrainRepository
 import com.jsontextfield.viable.data.repositories.TrainRepository
 import com.jsontextfield.viable.network.TrainService
 import com.jsontextfield.viable.ui.ViableViewModel
-import okhttp3.OkHttpClient
+import io.ktor.client.HttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -15,8 +15,8 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val networkModule = module {
-    single<OkHttpClient> { OkHttpClient() }
-    single<TrainService> { TrainService(get<OkHttpClient>()) }
+    single<HttpClient> { HttpClient() }
+    single<TrainService> { TrainService(get<HttpClient>()) }
 }
 
 val dataModule = module {

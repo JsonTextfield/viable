@@ -1,6 +1,5 @@
 package com.jsontextfield.viable.ui.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,36 +10,34 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.jsontextfield.viable.ui.ViableViewModel
+import com.jsontextfield.viable.data.model.Stop
+import com.jsontextfield.viable.data.model.Train
+import com.jsontextfield.viable.ui.ViableState
 import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viableViewModel: ViableViewModel) {
-    val configuration = LocalConfiguration.current
+fun MainScreen(
+    viableState: ViableState,
+    timeRemaining: Int,
+    onTrainSelected: (Train?) -> Unit,
+    onStopSelected: (Stop?) -> Unit,
+    isPortrait: Boolean = true,
+) {
     val cameraPositionState = rememberCameraPositionState()
     val listState = rememberLazyListState()
-    val viableState by viableViewModel.viableState.collectAsStateWithLifecycle()
     val selectedTrain = viableState.selectedTrain
     val shouldMoveCamera = viableState.shouldMoveCamera
     val selectedStation = viableState.selectedStation
     val trains = viableState.trains
     val routeLine = viableState.routeLine
-
-    val timeRemaining by viableViewModel.timeRemaining.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        viableViewModel.start()
-    }
 
     LaunchedEffect(selectedTrain) {
         selectedTrain?.let { train ->
@@ -51,12 +48,12 @@ fun MainScreen(viableViewModel: ViableViewModel) {
             }
             // Initial stop selection
             if (selectedStation == null) {
-                train.nextStop?.let(viableViewModel::onStopSelected)
+                train.nextStop?.let(onStopSelected)
                 listState.scrollToItem(max(0, train.stops.indexOfFirst { it == train.nextStop }))
             }
         }
     }
-    if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+    if (isPortrait) {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -64,7 +61,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                         TrainComboBox(
                             items = trains,
                             selectedItem = selectedTrain,
-                            onItemSelected = viableViewModel::onTrainSelected,
+                            onItemSelected = onTrainSelected,
                         )
                     },
                 )
@@ -92,7 +89,7 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     selectedStation = selectedStation,
                     modifier = Modifier.weight(.3f),
                     listState = listState,
-                    onItemClick = viableViewModel::onStopSelected
+                    onItemClick = onStopSelected
                 )
             }
         }
@@ -104,13 +101,13 @@ fun MainScreen(viableViewModel: ViableViewModel) {
                     TrainComboBox(
                         items = trains,
                         selectedItem = selectedTrain,
-                        onItemSelected = viableViewModel::onTrainSelected,
+                        onItemSelected = onTrainSelected,
                     )
                     StopsList(
                         stops = selectedTrain?.stops ?: emptyList(),
                         selectedStation = selectedStation,
                         listState = listState,
-                        onItemClick = viableViewModel::onStopSelected
+                        onItemClick = onStopSelected
                     )
                 }
                 Box(modifier = Modifier.weight(2f)) {
@@ -130,4 +127,16 @@ fun MainScreen(viableViewModel: ViableViewModel) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun MainScreenPreview() {
+    MainScreen(
+        viableState = ViableState(),
+        timeRemaining = 14000,
+        onTrainSelected = { },
+        onStopSelected = { },
+        isPortrait = true
+    )
 }
