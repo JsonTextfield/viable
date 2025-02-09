@@ -33,8 +33,9 @@ fun TrainListItem(
             SelectText(
                 if (train.nextStop != null) {
                     stringResource(
-                        Res.string.next_stop, train.nextStop?.name ?: "",
-                        //Html.fromHtml(train.nextStop?.eta ?: "", Html.FROM_HTML_MODE_LEGACY),
+                        Res.string.next_stop,
+                        train.nextStop?.name ?: "",
+                        train.nextStop?.eta ?: "",
                     )
                 } else if (train.arrived) {
                     stringResource(Res.string.arrived)

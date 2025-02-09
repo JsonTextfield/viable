@@ -47,13 +47,7 @@ fun StopsList(
                         if (stop.eta == "ARR") {
                             stringResource(Res.string.departed)
                         } else {
-                            stringResource(
-                                Res.string.arrives_in,
-//                                Html.fromHtml(
-//                                    stop.eta,
-//                                    Html.FROM_HTML_MODE_LEGACY
-//                                ),
-                            )
+                            stringResource(Res.string.arrives_in, stop.eta)
                         },
                         ListItemDefaults.colors().supportingTextColor,
                         stop.id == selectedStation?.code

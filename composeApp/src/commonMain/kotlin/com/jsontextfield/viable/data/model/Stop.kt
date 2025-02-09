@@ -18,10 +18,10 @@ data class Stop(
             //val outFormatter = DateTimeFormatter.ofPattern("HH:mm")
             //val schedule = outFormatter.format(inFormatter.parse(jsonObject.optString("scheduled")))
             return Stop(
-                name = jsonObject.get("station")?.jsonPrimitive?.contentOrNull ?: "",
-                eta = jsonObject.get("eta")?.jsonPrimitive?.contentOrNull ?: "",
-                id = jsonObject.get("code")?.jsonPrimitive?.contentOrNull ?: "",
-                delay = jsonObject.get("diffMin")?.jsonPrimitive?.intOrNull ?: 0,
+                name = jsonObject["station"]?.jsonPrimitive?.contentOrNull ?: "",
+                eta = jsonObject["eta"]?.jsonPrimitive?.contentOrNull ?: "",
+                id = jsonObject["code"]?.jsonPrimitive?.contentOrNull ?: "",
+                delay = jsonObject["diffMin"]?.jsonPrimitive?.intOrNull ?: 0,
                 //scheduled = schedule,
             )
         }
