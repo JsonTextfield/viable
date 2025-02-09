@@ -7,10 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.model.Train
+import org.jetbrains.compose.resources.stringResource
+import viable.app.generated.resources.Res
+import viable.app.generated.resources.arrived
+import viable.app.generated.resources.departed
+import viable.app.generated.resources.next_stop
 
 @Composable
 fun TrainListItem(
@@ -30,17 +34,14 @@ fun TrainListItem(
             SelectText(
                 if (train.nextStop != null) {
                     stringResource(
-                        id = R.string.next_stop, train.nextStop?.name ?: "",
+                        Res.string.next_stop, train.nextStop?.name ?: "",
                         Html.fromHtml(train.nextStop?.eta ?: "", Html.FROM_HTML_MODE_LEGACY),
                     )
-                }
-                else if (train.arrived) {
-                    stringResource(id = R.string.arrived)
-                }
-                else if (train.departed) {
-                    stringResource(id = R.string.departed)
-                }
-                else {
+                } else if (train.arrived) {
+                    stringResource(Res.string.arrived)
+                } else if (train.departed) {
+                    stringResource(Res.string.departed)
+                } else {
                     ""
                 },
                 ListItemDefaults.colors().supportingTextColor,

@@ -12,11 +12,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.jsontextfield.viable.R
+import viable.app.generated.resources.Res
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Stop
+import org.jetbrains.compose.resources.stringResource
+import viable.app.generated.resources.arrives_in
+import viable.app.generated.resources.departed
 
 @Composable
 fun StopsList(
@@ -42,11 +44,10 @@ fun StopsList(
                 supportingContent = {
                     SelectText(
                         if (stop.eta == "ARR") {
-                            stringResource(id = R.string.departed)
-                        }
-                        else {
+                            stringResource(Res.string.departed)
+                        } else {
                             stringResource(
-                                id = R.string.arrives_in,
+                                Res.string.arrives_in,
                                 Html.fromHtml(
                                     stop.eta,
                                     Html.FROM_HTML_MODE_LEGACY
