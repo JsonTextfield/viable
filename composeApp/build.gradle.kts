@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 kotlin {
     androidTarget {
@@ -53,11 +54,24 @@ kotlin {
             implementation(libs.play.services.maps)
             implementation(libs.maps.compose)
 
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.room.ktx)
+
             implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+
+        dependencies {
+            ksp(libs.androidx.room.compiler)
+
+            debugImplementation(libs.androidx.ui.tooling)
+            debugImplementation(libs.androidx.ui.test.manifest)
+        }
+    }
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 }
 
@@ -77,19 +91,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    signingConfigs {
-//        create("release") {
-//            storeFile = file(properties["releaseStoreFile"].toString())
-//            storePassword = properties["releaseStorePassword"].toString()
-//            keyAlias = properties["releaseKeyAlias"].toString()
-//            keyPassword = properties["releaseKeyPassword"].toString()
-//        }
-    }
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            //signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
@@ -97,12 +102,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-dependencies {
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }
