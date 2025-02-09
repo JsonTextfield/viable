@@ -1,13 +1,13 @@
 package com.jsontextfield.viable.ui.components
 
-import android.text.Html
+//import android.text.Html
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.tooling.preview.Preview
+//import androidx.compose.ui.tooling.preview.Preview
 import com.jsontextfield.viable.data.model.Train
 import org.jetbrains.compose.resources.stringResource
 import viable.composeapp.generated.resources.Res
@@ -34,7 +34,7 @@ fun TrainListItem(
                 if (train.nextStop != null) {
                     stringResource(
                         Res.string.next_stop, train.nextStop?.name ?: "",
-                        Html.fromHtml(train.nextStop?.eta ?: "", Html.FROM_HTML_MODE_LEGACY),
+                        //Html.fromHtml(train.nextStop?.eta ?: "", Html.FROM_HTML_MODE_LEGACY),
                     )
                 } else if (train.arrived) {
                     stringResource(Res.string.arrived)
@@ -50,7 +50,7 @@ fun TrainListItem(
     )
 }
 
-@Preview
+//@Preview
 @Composable
 private fun TrainListItemPreview() {
     TrainListItem(

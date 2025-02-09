@@ -2,6 +2,8 @@
 agp = "8.8.0"
 kotlin = "2.1.0"
 activityCompose = "1.9.3"
+kotlinxCoroutinesAndroid = "1.9.0"
+kotlinxSerializationJson = "1.8.0"
 mapsCompose = "4.4.1"
 playServicesMaps = "19.0.0"
 roomVersion = "2.7.0-alpha13"
@@ -10,6 +12,8 @@ ktor = "3.0.3"
 ksp = "2.1.0-1.0.29"
 compose-multiplatform = "1.7.0"
 kotlinxDatetime = "0.6.1"
+sqlite = "2.5.0-alpha13"
+json = "20250107"
 
 [libraries]
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
@@ -20,17 +24,21 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-utils = { module = "io.ktor:ktor-utils", version.ref = "ktor" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-
+sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+json = { module = "org.json:json", version.ref = "json" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

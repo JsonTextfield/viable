@@ -1,5 +1,6 @@
 package com.jsontextfield.viable.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.jsontextfield.viable.data.database.DatabaseFactory
 import com.jsontextfield.viable.data.database.ViaRailDatabase
 import com.jsontextfield.viable.data.repositories.ITrainRepository
@@ -23,7 +24,7 @@ val networkModule = module {
 val dataModule = module {
     single {
         get<DatabaseFactory>().create()
-            //.setDriver(BundledSQLiteDriver())
+            .setDriver(BundledSQLiteDriver())
             .build()
     }
     single<ITrainRepository> {

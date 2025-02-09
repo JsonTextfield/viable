@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+
+    kotlin("plugin.serialization") version "2.1.10"
 }
 kotlin {
     androidTarget {
@@ -52,6 +54,7 @@ kotlin {
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.utils)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
@@ -60,9 +63,14 @@ kotlin {
             implementation(libs.maps.compose)
 
             implementation(libs.androidx.room.runtime)
-            implementation(libs.androidx.room.ktx)
+            //implementation(libs.androidx.room.ktx)
+            implementation(libs.json)
+            implementation(libs.sqlite)
 
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+            implementation(libs.kotlinx.serialization.json)
+
+
+            //implementation(libs.kotlinx.coroutines.android)
 
             implementation(libs.kotlinx.datetime)
         }

@@ -1,20 +1,20 @@
 package com.jsontextfield.viable.ui.components
 
-import android.text.Html
+//import android.text.Html
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.JointType
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.RoundCap
-import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.Polyline
-import com.jsontextfield.viable.R
+//import androidx.compose.ui.res.colorResource
+//import com.google.android.gms.maps.model.BitmapDescriptorFactory
+//import com.google.android.gms.maps.model.JointType
+//import com.google.android.gms.maps.model.LatLng
+//import com.google.android.gms.maps.model.RoundCap
+//import com.google.maps.android.compose.CameraPositionState
+//import com.google.maps.android.compose.GoogleMap
+//import com.google.maps.android.compose.MapProperties
+//import com.google.maps.android.compose.Marker
+//import com.google.maps.android.compose.MarkerState
+//import com.google.maps.android.compose.Polyline
+//import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.database.entities.Shape
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Train
@@ -28,58 +28,58 @@ import viable.composeapp.generated.resources.next_stop
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ViableMap(
-    cameraPositionState: CameraPositionState,
+    //cameraPositionState: CameraPositionState,
     modifier: Modifier = Modifier,
     selectedTrain: Train? = null,
     selectedStation: Station? = null,
     routeLine: List<Shape> = emptyList(),
 ) {
-    //val context = LocalContext.current
-    GoogleMap(
-        modifier = modifier,
-        cameraPositionState = cameraPositionState,
-        properties = MapProperties(
-            minZoomPreference = 5f,
-            maxZoomPreference = 15f,
-        ),
-    ) {
-        selectedTrain?.let { train ->
-            Polyline(
-                endCap = RoundCap(),
-                startCap = RoundCap(),
-                jointType = JointType.ROUND,
-                points = routeLine.map { LatLng(it.lat, it.lon) },
-                color = colorResource(id = R.color.primary_colour),
-            )
-            train.location?.let {
-                Marker(
-                    state = MarkerState(position = LatLng(it.lat, it.lon)),
-                    title = selectedTrain.toString(),
-                    icon = BitmapDescriptorFactory.fromAsset("train.png"),
-                    snippet = if (!train.departed) {
-                        stringResource(Res.string.departed)
-                    }
-                    else if (train.arrived) {
-                        stringResource(Res.string.arrived)
-                    }
-                    else {
-                        stringResource(
-                            Res.string.next_stop, train.nextStop?.name ?: "",
-                            Html.fromHtml(
-                                train.nextStop?.eta ?: "",
-                                Html.FROM_HTML_MODE_LEGACY
-                            ),
-                        )
-                    },
-                )
-            }
-        }
-        selectedStation?.let {
-            Marker(
-                icon = BitmapDescriptorFactory.fromAsset("station.png"),
-                state = MarkerState(position = LatLng(it.lat, it.lon)),
-                title = it.name,
-            )
-        }
-    }
+//    //val context = LocalContext.current
+//    GoogleMap(
+//        modifier = modifier,
+//        cameraPositionState = cameraPositionState,
+//        properties = MapProperties(
+//            minZoomPreference = 5f,
+//            maxZoomPreference = 15f,
+//        ),
+//    ) {
+//        selectedTrain?.let { train ->
+//            Polyline(
+//                endCap = RoundCap(),
+//                startCap = RoundCap(),
+//                jointType = JointType.ROUND,
+//                points = routeLine.map { LatLng(it.lat, it.lon) },
+//                color = colorResource(id = R.color.primary_colour),
+//            )
+//            train.location?.let {
+//                Marker(
+//                    state = MarkerState(position = LatLng(it.lat, it.lon)),
+//                    title = selectedTrain.toString(),
+//                    icon = BitmapDescriptorFactory.fromAsset("train.png"),
+//                    snippet = if (!train.departed) {
+//                        stringResource(Res.string.departed)
+//                    }
+//                    else if (train.arrived) {
+//                        stringResource(Res.string.arrived)
+//                    }
+//                    else {
+//                        stringResource(
+//                            Res.string.next_stop, train.nextStop?.name ?: "",
+//                            Html.fromHtml(
+//                                train.nextStop?.eta ?: "",
+//                                Html.FROM_HTML_MODE_LEGACY
+//                            ),
+//                        )
+//                    },
+//                )
+//            }
+//        }
+//        selectedStation?.let {
+//            Marker(
+//                icon = BitmapDescriptorFactory.fromAsset("station.png"),
+//                state = MarkerState(position = LatLng(it.lat, it.lon)),
+//                title = it.name,
+//            )
+//        }
+//    }
 }

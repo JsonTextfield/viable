@@ -1,6 +1,6 @@
 package com.jsontextfield.viable.ui.components
 
-import android.text.Html
+//import android.text.Html
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -12,11 +12,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.tooling.preview.Preview
-import viable.composeapp.generated.resources.Res
+//import androidx.compose.ui.tooling.preview.Preview
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Stop
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import viable.composeapp.generated.resources.Res
 import viable.composeapp.generated.resources.arrives_in
 import viable.composeapp.generated.resources.departed
 
@@ -48,10 +49,10 @@ fun StopsList(
                         } else {
                             stringResource(
                                 Res.string.arrives_in,
-                                Html.fromHtml(
-                                    stop.eta,
-                                    Html.FROM_HTML_MODE_LEGACY
-                                ),
+//                                Html.fromHtml(
+//                                    stop.eta,
+//                                    Html.FROM_HTML_MODE_LEGACY
+//                                ),
                             )
                         },
                         ListItemDefaults.colors().supportingTextColor,
@@ -63,7 +64,7 @@ fun StopsList(
     }
 }
 
-@Preview
+//@Preview
 @Composable
 private fun StopListPreview() {
     StopsList(

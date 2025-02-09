@@ -12,11 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.rememberCameraPositionState
+//import com.google.maps.android.compose.rememberCameraPositionState
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.ui.ViableState
@@ -32,7 +29,7 @@ fun MainScreen(
     onStopSelected: (Stop?) -> Unit,
     isPortrait: Boolean = true,
 ) {
-    val cameraPositionState = rememberCameraPositionState()
+    //val cameraPositionState = rememberCameraPositionState()
     val listState = rememberLazyListState()
     val selectedTrain = viableState.selectedTrain
     val shouldMoveCamera = viableState.shouldMoveCamera
