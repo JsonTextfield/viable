@@ -69,7 +69,9 @@ kotlin {
 
             implementation(libs.kotlinx.serialization.json)
 
-
+            // Supabase
+            implementation(project.dependencies.platform(libs.supabase.bom))
+            implementation(libs.postgrest.kt)
             //implementation(libs.kotlinx.coroutines.android)
 
             implementation(libs.kotlinx.datetime)
@@ -82,12 +84,12 @@ kotlin {
 
 android {
     namespace = "com.jsontextfield.viable"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.jsontextfield.viable"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 8
         versionName = "1.2.0"
     }

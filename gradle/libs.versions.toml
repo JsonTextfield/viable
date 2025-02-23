@@ -1,19 +1,20 @@
 [versions]
-agp = "8.8.0"
+agp = "8.8.1"
 kotlin = "2.1.0"
-activityCompose = "1.9.3"
-kotlinxCoroutinesAndroid = "1.9.0"
+activityCompose = "1.10.0"
+kotlinxCoroutinesAndroid = "1.10.1"
 kotlinxSerializationJson = "1.8.0"
 mapsCompose = "4.4.1"
-playServicesMaps = "19.0.0"
-roomVersion = "2.7.0-alpha13"
+playServicesMaps = "19.1.0"
+roomVersion = "2.7.0-beta01"
 koin = "4.0.0"
 ktor = "3.0.3"
 ksp = "2.1.0-1.0.29"
 compose-multiplatform = "1.7.0"
 kotlinxDatetime = "0.6.1"
-sqlite = "2.5.0-alpha13"
+sqlite = "2.5.0-beta01"
 json = "20250107"
+supabase = "3.1.1"
 
 [libraries]
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
@@ -39,6 +40,8 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 json = { module = "org.json:json", version.ref = "json" }
+supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
+postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
