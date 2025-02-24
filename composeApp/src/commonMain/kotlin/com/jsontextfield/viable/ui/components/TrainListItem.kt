@@ -13,7 +13,6 @@ import viable.composeapp.generated.resources.Res
 import viable.composeapp.generated.resources.arrived
 import viable.composeapp.generated.resources.departed
 import viable.composeapp.generated.resources.next_stop
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun TrainListItem(
@@ -48,18 +47,5 @@ fun TrainListItem(
                 isSelected
             )
         },
-    )
-}
-
-@Preview
-@Composable
-private fun TrainListItemPreview() {
-    TrainListItem(
-        train = Train(
-            number = "45",
-            headsign = "Ottawa -> Toronto",
-            departed = true,
-            arrived = true,
-        )
     )
 }

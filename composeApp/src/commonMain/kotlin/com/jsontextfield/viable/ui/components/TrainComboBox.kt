@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jsontextfield.viable.data.model.Train
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,15 +61,4 @@ fun TrainComboBox(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun TrainComboBoxPreview() {
-    TrainComboBox(
-        selectedItem = Train(
-            number = "45",
-            headsign = "Ottawa -> Toronto",
-        )
-    )
 }

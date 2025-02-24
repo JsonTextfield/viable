@@ -21,7 +21,6 @@ import com.jsontextfield.viable.data.model.LatLon
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.ui.ViableState
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -128,16 +127,4 @@ fun MainScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun MainScreenPreview() {
-    MainScreen(
-        viableState = ViableState(),
-        timeRemaining = 14000,
-        onTrainSelected = { },
-        onStopSelected = { },
-        isPortrait = true
-    )
 }
