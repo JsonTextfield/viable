@@ -1,7 +1,6 @@
 package com.jsontextfield.viable.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
@@ -14,9 +13,6 @@ fun App() {
     val viewModel = koinViewModel<ViableViewModel>()
     val state by viewModel.viableState.collectAsState()
     val timeRemaining by viewModel.timeRemaining.collectAsState()
-    LaunchedEffect(Unit) {
-        viewModel.start()
-    }
     ViableTheme {
         MainScreen(
             viableState = state,

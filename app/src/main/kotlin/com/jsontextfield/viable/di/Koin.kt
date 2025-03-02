@@ -11,7 +11,6 @@ import io.ktor.client.HttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val networkModule = module {
@@ -21,11 +20,14 @@ val networkModule = module {
 
 val dataModule = module {
     single<ViaRailDatabase> {
-        Room.databaseBuilder(
-            androidApplication(),
-            ViaRailDatabase::class.java,
-            "viarail.db"
-        ).createFromAsset("via.db").build()
+        Room
+            .databaseBuilder(
+                androidApplication(),
+                ViaRailDatabase::class.java,
+                "viarail.db"
+            ).createFromAsset("via.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
     single<ITrainRepository> {
         TrainRepository(
@@ -36,7 +38,9 @@ val dataModule = module {
 }
 
 val viewModelModule = module {
-    factoryOf(::ViableViewModel)
+    single<ViableViewModel> {
+        ViableViewModel(get<ITrainRepository>())
+    }
 }
 
 fun initKoin(context: Context) {

@@ -24,7 +24,11 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
     private var timerJob: Job? = null
 
-    fun start() {
+    init {
+        start()
+    }
+
+    private fun start() {
         timerJob = timerJob ?: viewModelScope.launch {
             while (true) {
                 if (timeRemaining.value <= 0) {
