@@ -43,7 +43,7 @@ fun MainScreen(
         selectedTrain?.let { train ->
             train.location?.let {
                 if (shouldMoveCamera) {
-                    cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                    cameraPositionState.animate(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
                 }
             }
             // Initial stop selection
@@ -67,7 +67,7 @@ fun MainScreen(
                 )
             },
         ) { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
+            Column(modifier = Modifier.padding(top = innerPadding.calculateTopPadding())) {
                 Box(
                     modifier = Modifier.weight(.5f),
                 ) {
@@ -81,7 +81,7 @@ fun MainScreen(
                         timeRemaining = timeRemaining,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(4.dp),
+                            .padding(8.dp),
                     )
                 }
                 StopsList(
@@ -96,8 +96,10 @@ fun MainScreen(
     }
     else {
         Scaffold { innerPadding ->
-            Row(modifier = Modifier.padding(innerPadding)) {
-                Column(Modifier.weight(1f)) {
+            Row {
+                Column(Modifier
+                    .weight(1f)
+                    .padding(top = innerPadding.calculateTopPadding())) {
                     TrainComboBox(
                         items = trains,
                         selectedItem = selectedTrain,
@@ -121,7 +123,8 @@ fun MainScreen(
                         timeRemaining = timeRemaining,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(4.dp),
+                            .padding(top = innerPadding.calculateTopPadding())
+                            .padding(8.dp),
                     )
                 }
             }

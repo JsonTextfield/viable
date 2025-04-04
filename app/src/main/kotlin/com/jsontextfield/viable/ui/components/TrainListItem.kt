@@ -4,6 +4,7 @@ import android.text.Html
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -19,15 +20,20 @@ fun TrainListItem(
 ) {
     ListItem(
         modifier = Modifier.alpha(if (train.location != null) 1f else 0.5f),
+        colors = ListItemDefaults.colors(
+            containerColor = if (isSelected) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else if (train.location != null) {
+                MaterialTheme.colorScheme.surfaceContainerLow
+            } else {
+                MaterialTheme.colorScheme.surface
+            }
+        ),
         headlineContent = {
-            SelectText(
-                train.toString(),
-                MaterialTheme.colorScheme.onSurface,
-                isSelected
-            )
+            Text(train.toString())
         },
         supportingContent = {
-            SelectText(
+            Text(
                 if (train.nextStop != null) {
                     stringResource(
                         id = R.string.next_stop, train.nextStop?.name ?: "",
@@ -43,8 +49,6 @@ fun TrainListItem(
                 else {
                     ""
                 },
-                ListItemDefaults.colors().supportingTextColor,
-                isSelected
             )
         },
     )

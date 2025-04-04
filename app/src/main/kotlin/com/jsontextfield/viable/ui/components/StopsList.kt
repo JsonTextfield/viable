@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,14 +34,10 @@ fun StopsList(
                     .alpha(if (stop.eta != "ARR") 1f else 0.5f)
                     .clickable { onItemClick(stop) },
                 headlineContent = {
-                    SelectText(
-                        stop.name,
-                        MaterialTheme.colorScheme.onSurface,
-                        stop.id == selectedStation?.code
-                    )
+                    Text(stop.name)
                 },
                 supportingContent = {
-                    SelectText(
+                    Text(
                         if (stop.eta == "ARR") {
                             stringResource(id = R.string.departed)
                         }
@@ -53,10 +50,15 @@ fun StopsList(
                                 ),
                             )
                         },
-                        ListItemDefaults.colors().supportingTextColor,
-                        stop.id == selectedStation?.code
                     )
                 },
+                colors = ListItemDefaults.colors(
+                    containerColor = if (stop.id == selectedStation?.code) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surface
+                    }
+                ),
             )
         }
     }
