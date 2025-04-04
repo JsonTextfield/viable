@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
@@ -81,18 +82,20 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
     }
 
     private fun downloadData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val data = repo.getTrains()
-            _viableState.update {
-                it.copy(
-                    trains = data
-                )
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val data = repo.getTrains()
+                _viableState.update {
+                    it.copy(
+                        trains = data
+                    )
+                }
+                val train: Train? =
+                    data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
+                        ?: data.firstOrNull { it.location != null }
+                        ?: data.firstOrNull()
+                onTrainSelected(train)
             }
-            val train: Train? =
-                data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
-                    ?: data.firstOrNull { it.location != null }
-                    ?: data.firstOrNull()
-            onTrainSelected(train)
         }
     }
 }
