@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.jsontextfield.viable"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.jsontextfield.viable"
         minSdk = 28
-        targetSdk = 34
-        versionCode = 8
-        versionName = "1.2.0"
+        targetSdk = 35
+        versionCode = 9
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
