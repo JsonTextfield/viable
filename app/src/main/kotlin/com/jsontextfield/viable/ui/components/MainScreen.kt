@@ -1,9 +1,15 @@
 package com.jsontextfield.viable.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -12,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,7 +50,14 @@ fun MainScreen(
         selectedTrain?.let { train ->
             train.location?.let {
                 if (shouldMoveCamera) {
-                    cameraPositionState.animate(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
+                    cameraPositionState.animate(
+                        CameraUpdateFactory.newLatLng(
+                            LatLng(
+                                it.lat,
+                                it.lon
+                            )
+                        )
+                    )
                 }
             }
             // Initial stop selection
@@ -97,9 +111,14 @@ fun MainScreen(
     else {
         Scaffold { innerPadding ->
             Row {
-                Column(Modifier
-                    .weight(1f)
-                    .padding(top = innerPadding.calculateTopPadding())) {
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .padding(
+                            bottom = innerPadding.calculateBottomPadding(),
+                            top = innerPadding.calculateTopPadding(),
+                        )
+                ) {
                     TrainComboBox(
                         items = trains,
                         selectedItem = selectedTrain,
@@ -112,7 +131,11 @@ fun MainScreen(
                         onItemClick = onStopSelected
                     )
                 }
-                Box(modifier = Modifier.weight(2f)) {
+                Box(
+                    modifier = Modifier
+                        .weight(2f)
+                        .padding(bottom = innerPadding.calculateBottomPadding())
+                ) {
                     ViableMap(
                         cameraPositionState = cameraPositionState,
                         selectedTrain = selectedTrain,
@@ -128,6 +151,19 @@ fun MainScreen(
                     )
                 }
             }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .windowInsetsTopHeight(WindowInsets.statusBars)
+                    .background(
+                        if (isSystemInDarkTheme()) {
+                            Color.Black.copy(alpha = 0.3f)
+                        }
+                        else {
+                            Color.White.copy(alpha = 0.3f)
+                        }
+                    )
+            )
         }
     }
 }

@@ -2,6 +2,10 @@ package com.jsontextfield.viable.ui.components
 
 import android.text.Html
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -27,7 +31,13 @@ fun StopsList(
     listState: LazyListState = rememberLazyListState(),
     onItemClick: (Stop) -> Unit = {},
 ) {
-    LazyColumn(modifier = modifier, state = listState) {
+    LazyColumn(
+        modifier = modifier,
+        state = listState,
+        contentPadding = PaddingValues(
+            bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+        )
+    ) {
         items(stops) { stop ->
             ListItem(
                 modifier = Modifier
@@ -55,7 +65,8 @@ fun StopsList(
                 colors = ListItemDefaults.colors(
                     containerColor = if (stop.id == selectedStation?.code) {
                         MaterialTheme.colorScheme.primaryContainer
-                    } else {
+                    }
+                    else {
                         MaterialTheme.colorScheme.surface
                     }
                 ),
