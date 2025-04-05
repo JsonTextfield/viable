@@ -124,7 +124,6 @@ fun MainScreen(
                     Modifier
                         .weight(1f)
                         .padding(
-                            bottom = innerPadding.calculateBottomPadding(),
                             top = innerPadding.calculateTopPadding(),
                             start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
                         )
@@ -146,6 +145,7 @@ fun MainScreen(
                         .weight(2f)
                         .padding(
                             end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+                            bottom = innerPadding.calculateBottomPadding(),
                         )
                 ) {
                     ViableMap(
