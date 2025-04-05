@@ -16,7 +16,7 @@ fun App() {
     ViableTheme {
         MainScreen(
             viableState = state,
-            isPortrait = getScreenWidthDp() < 900.dp,
+            isPortrait = getScreenWidthDp() < 720.dp,
             onTrainSelected = viewModel::onTrainSelected,
             onStopSelected = viewModel::onStopSelected,
             timeRemaining = timeRemaining,
