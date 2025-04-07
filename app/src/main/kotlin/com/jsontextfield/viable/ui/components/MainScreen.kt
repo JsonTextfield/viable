@@ -86,7 +86,13 @@ fun MainScreen(
                 )
             },
         ) { innerPadding ->
-            Column(modifier = Modifier.padding(top = innerPadding.calculateTopPadding())) {
+            Column(
+                modifier = Modifier.padding(
+                    top = innerPadding.calculateTopPadding(),
+                    start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+                )
+            ) {
                 Box(
                     modifier = Modifier.weight(.5f),
                 ) {
@@ -125,7 +131,6 @@ fun MainScreen(
                         .weight(1f)
                         .padding(
                             top = innerPadding.calculateTopPadding(),
-                            start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
                         )
                 ) {
                     TrainComboBox(
@@ -137,7 +142,11 @@ fun MainScreen(
                         stops = selectedTrain?.stops ?: emptyList(),
                         selectedStation = selectedStation,
                         listState = listState,
-                        onItemClick = onStopSelected
+                        onItemClick = onStopSelected,
+                        modifier = Modifier.padding(
+                            start = WindowInsets.safeDrawing.asPaddingValues()
+                                .calculateStartPadding(LayoutDirection.Ltr),
+                        )
                     )
                 }
                 Box(

@@ -5,7 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -35,7 +35,7 @@ fun StopsList(
         modifier = modifier,
         state = listState,
         contentPadding = PaddingValues(
-            bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+            bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
         )
     ) {
         items(stops) { stop ->
