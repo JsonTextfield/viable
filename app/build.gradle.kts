@@ -83,6 +83,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation(libs.commons.text)
+
     implementation(libs.ktor.client.core)
 
     implementation(libs.androidx.room.ktx)

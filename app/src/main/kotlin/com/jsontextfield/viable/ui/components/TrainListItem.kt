@@ -1,6 +1,5 @@
 package com.jsontextfield.viable.ui.components
 
-import android.text.Html
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -12,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.model.Train
+import org.apache.commons.text.StringEscapeUtils
 
 @Composable
 fun TrainListItem(
@@ -34,21 +34,26 @@ fun TrainListItem(
         },
         supportingContent = {
             Text(
-                if (train.nextStop != null) {
-                    stringResource(
-                        id = R.string.next_stop, train.nextStop?.name ?: "",
-                        Html.fromHtml(train.nextStop?.eta ?: "", Html.FROM_HTML_MODE_LEGACY),
-                    )
+                when {
+                    train.nextStop != null -> {
+                        stringResource(
+                            id = R.string.next_stop, train.nextStop?.name ?: "",
+                            StringEscapeUtils.unescapeHtml4(train.nextStop?.eta ?: ""),
+                        )
+                    }
+
+                    train.arrived -> {
+                        stringResource(id = R.string.arrived)
+                    }
+
+                    train.departed -> {
+                        stringResource(id = R.string.departed)
+                    }
+
+                    else -> {
+                        ""
+                    }
                 }
-                else if (train.arrived) {
-                    stringResource(id = R.string.arrived)
-                }
-                else if (train.departed) {
-                    stringResource(id = R.string.departed)
-                }
-                else {
-                    ""
-                },
             )
         },
     )

@@ -1,6 +1,5 @@
 package com.jsontextfield.viable.ui.components
 
-import android.text.Html
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Stop
+import org.apache.commons.text.StringEscapeUtils
 
 @Composable
 fun StopsList(
@@ -64,10 +64,7 @@ fun StopsList(
                         else {
                             stringResource(
                                 id = R.string.arrives_in,
-                                Html.fromHtml(
-                                    stop.eta,
-                                    Html.FROM_HTML_MODE_LEGACY
-                                ),
+                                StringEscapeUtils.unescapeHtml4(stop.eta),
                             )
                         },
                         modifier = Modifier.padding(

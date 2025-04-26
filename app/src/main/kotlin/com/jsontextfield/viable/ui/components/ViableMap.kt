@@ -1,6 +1,5 @@
 package com.jsontextfield.viable.ui.components
 
-import android.text.Html
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.database.entities.Shape
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Train
+import org.apache.commons.text.StringEscapeUtils
 
 @Composable
 fun ViableMap(
@@ -68,10 +68,7 @@ fun ViableMap(
                     else {
                         stringResource(
                             id = R.string.next_stop, train.nextStop?.name ?: "",
-                            Html.fromHtml(
-                                train.nextStop?.eta ?: "",
-                                Html.FROM_HTML_MODE_LEGACY
-                            ),
+                            StringEscapeUtils.unescapeHtml4(train.nextStop?.eta ?: ""),
                         )
                     },
                 )
