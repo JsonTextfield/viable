@@ -2,7 +2,7 @@ package com.jsontextfield.viable.di
 
 import android.content.Context
 import androidx.room.Room
-import com.jsontextfield.viable.data.database.ViaRailDatabase
+import com.jsontextfield.viable.data.database.ViaRailRoomDatabase
 import com.jsontextfield.viable.data.repositories.ITrainRepository
 import com.jsontextfield.viable.data.repositories.TrainRepository
 import com.jsontextfield.viable.network.TrainService
@@ -19,11 +19,11 @@ val networkModule = module {
 }
 
 val dataModule = module {
-    single<ViaRailDatabase> {
+    single<ViaRailRoomDatabase> {
         Room
             .databaseBuilder(
                 androidApplication(),
-                ViaRailDatabase::class.java,
+                ViaRailRoomDatabase::class.java,
                 "viarail.db"
             ).createFromAsset("via.db")
             .fallbackToDestructiveMigration()
@@ -31,7 +31,7 @@ val dataModule = module {
     }
     single<ITrainRepository> {
         TrainRepository(
-            get<ViaRailDatabase>(),
+            get<ViaRailRoomDatabase>(),
             get<TrainService>(),
         )
     }
