@@ -1,14 +1,18 @@
 package com.jsontextfield.viable.ui.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
@@ -33,6 +37,7 @@ fun ViableMap(
     selectedTrain: Train? = null,
     selectedStation: Station? = null,
     routeLine: List<Shape> = emptyList(),
+    isPortrait: Boolean = true,
 ) {
     val context = LocalContext.current
     GoogleMap(
@@ -43,12 +48,16 @@ fun ViableMap(
             maxZoomPreference = 15f,
             mapStyleOptions = if (isSystemInDarkTheme()) {
                 MapStyleOptions.loadRawResourceStyle(context, R.raw.dark_mode)
-            }
-            else {
+            } else {
                 null
             },
         ),
-        contentPadding = WindowInsets.safeDrawing.asPaddingValues()
+        contentPadding = PaddingValues(
+            bottom = if (isPortrait) 0.dp else WindowInsets.safeDrawing.asPaddingValues()
+                .calculateBottomPadding(),
+            end = WindowInsets.safeDrawing.asPaddingValues()
+                .calculateEndPadding(LayoutDirection.Ltr)
+        )
     ) {
         selectedTrain?.let { train ->
             Polyline(
@@ -65,11 +74,9 @@ fun ViableMap(
                     icon = BitmapDescriptorFactory.fromAsset("train.png"),
                     snippet = if (!train.departed) {
                         stringResource(id = R.string.departed)
-                    }
-                    else if (train.arrived) {
+                    } else if (train.arrived) {
                         stringResource(id = R.string.arrived)
-                    }
-                    else {
+                    } else {
                         stringResource(
                             id = R.string.next_stop, train.nextStop?.name ?: "",
                             StringEscapeUtils.unescapeHtml4(train.nextStop?.eta ?: ""),

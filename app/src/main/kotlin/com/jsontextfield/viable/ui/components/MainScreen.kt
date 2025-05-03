@@ -143,7 +143,8 @@ fun MainScreen(
                         cameraPositionState = cameraPositionState,
                         selectedTrain = selectedTrain,
                         selectedStation = selectedStation,
-                        routeLine = routeLine
+                        routeLine = routeLine,
+                        isPortrait = false
                     )
                     CountdownTimer(
                         timeRemaining = timeRemaining,
