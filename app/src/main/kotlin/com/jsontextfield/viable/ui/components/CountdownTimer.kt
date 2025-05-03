@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 
 @Composable
 fun CountdownTimer(
@@ -23,7 +24,7 @@ fun CountdownTimer(
             easing = LinearEasing
         )
     )
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.clearAndSetSemantics {  }, contentAlignment = Alignment.Center) {
         CircularProgressIndicator(progress = { progress },)
         Text((timeRemaining / 1000).toString())
     }
