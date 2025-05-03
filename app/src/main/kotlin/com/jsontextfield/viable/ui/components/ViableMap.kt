@@ -1,6 +1,9 @@
 package com.jsontextfield.viable.ui.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -45,6 +48,7 @@ fun ViableMap(
                 null
             },
         ),
+        contentPadding = WindowInsets.safeDrawing.asPaddingValues()
     ) {
         selectedTrain?.let { train ->
             Polyline(

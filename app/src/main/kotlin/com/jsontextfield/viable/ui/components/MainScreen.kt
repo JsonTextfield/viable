@@ -116,8 +116,7 @@ fun MainScreen(
                 )
             }
         }
-    }
-    else {
+    } else {
         Scaffold { innerPadding ->
             Row {
                 Column(
@@ -139,14 +138,7 @@ fun MainScreen(
                         onItemClick = onStopSelected,
                     )
                 }
-                Box(
-                    modifier = Modifier
-                        .weight(2f)
-                        .padding(
-                            end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
-                            bottom = innerPadding.calculateBottomPadding(),
-                        )
-                ) {
+                Box(Modifier.weight(2f)) {
                     ViableMap(
                         cameraPositionState = cameraPositionState,
                         selectedTrain = selectedTrain,
@@ -158,7 +150,11 @@ fun MainScreen(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(top = innerPadding.calculateTopPadding())
-                            .padding(8.dp),
+                            .padding(8.dp)
+                            .padding(
+                                end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+                                bottom = innerPadding.calculateBottomPadding(),
+                            ),
                     )
                 }
             }
