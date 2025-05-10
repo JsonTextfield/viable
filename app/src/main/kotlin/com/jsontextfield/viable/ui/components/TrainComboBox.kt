@@ -44,7 +44,7 @@ fun TrainComboBox(
         ListItem(
             headlineContent = {
                 Text(
-                    selectedItem?.toString() ?: "",
+                    selectedItem?.name.orEmpty(),
                     maxLines = 1,
                     modifier = Modifier.basicMarquee()
                 )

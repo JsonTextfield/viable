@@ -11,11 +11,11 @@ data class Train(
     val location: LatLon? = null,
     val stops: List<Stop> = emptyList(),
 ) {
-    override fun toString() = "$number $headsign"
+    val name: String
+        get() = "$number $headsign".toMixedCase()
 
     val nextStop: Stop?
         get() = stops.find { it.eta != "ARR" }
-
 }
 
 fun String.toMixedCase(): String {

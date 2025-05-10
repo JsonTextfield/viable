@@ -108,7 +108,7 @@ fun StopsList(
 private fun StopListPreview() {
     StopsList(
         stops = (1 until 10).map {
-            Stop("Stop $it", "${it * 7}m")
+            Stop(id = "$it", name = "Stop $it", "${it * 7}m")
         },
     )
 }

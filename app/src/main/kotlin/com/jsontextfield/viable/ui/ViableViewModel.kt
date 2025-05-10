@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.jsontextfield.viable.data.model.Stop
 import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.data.repositories.ITrainRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
@@ -35,8 +33,7 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
                 if (timeRemaining.value <= 0) {
                     downloadData()
                     _timeRemaining.value = 30_000
-                }
-                else {
+                } else {
                     delay(1000)
                     _timeRemaining.value -= 1000
                 }
@@ -55,15 +52,14 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
             _viableState.update {
                 // If the selected train changes, reset the selected station and get the new route line
                 val selectedTrainChanged =
-                    train?.toString() != viableState.value.selectedTrain?.toString()
+                    train?.name != viableState.value.selectedTrain?.name
                 it.copy(
                     selectedTrain = train,
                     shouldMoveCamera = selectedTrainChanged,
                     selectedStation = if (selectedTrainChanged) null else it.selectedStation,
                     routeLine = if (selectedTrainChanged) {
                         repo.getLine(train?.number?.split(" ")?.first() ?: "")
-                    }
-                    else {
+                    } else {
                         it.routeLine
                     },
                 )
@@ -83,19 +79,15 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
     private fun downloadData() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val data = repo.getTrains()
-                _viableState.update {
-                    it.copy(
-                        trains = data
-                    )
-                }
-                val train: Train? =
-                    data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
-                        ?: data.firstOrNull { it.location != null }
-                        ?: data.firstOrNull()
-                onTrainSelected(train)
+            val data = repo.getTrains()
+            _viableState.update {
+                it.copy(trains = data)
             }
+            val train: Train? =
+                data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
+                    ?: data.firstOrNull { it.location != null }
+                    ?: data.firstOrNull()
+            onTrainSelected(train)
         }
     }
 }

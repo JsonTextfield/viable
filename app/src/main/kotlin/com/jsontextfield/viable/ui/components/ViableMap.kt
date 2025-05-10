@@ -70,7 +70,7 @@ fun ViableMap(
             train.location?.let {
                 Marker(
                     state = MarkerState(position = LatLng(it.lat, it.lon)),
-                    title = selectedTrain.toString(),
+                    title = selectedTrain.name,
                     icon = BitmapDescriptorFactory.fromAsset("train.png"),
                     snippet = if (!train.departed) {
                         stringResource(id = R.string.departed)

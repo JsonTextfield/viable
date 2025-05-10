@@ -30,7 +30,7 @@ fun TrainListItem(
             }
         ),
         headlineContent = {
-            Text(train.toString())
+            Text(train.name)
         },
         supportingContent = {
             Text(

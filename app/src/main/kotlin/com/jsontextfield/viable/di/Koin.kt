@@ -8,13 +8,26 @@ import com.jsontextfield.viable.data.repositories.TrainRepository
 import com.jsontextfield.viable.network.TrainService
 import com.jsontextfield.viable.ui.ViableViewModel
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 
 val networkModule = module {
-    single<HttpClient> { HttpClient() }
+    single<HttpClient> {
+        HttpClient {
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                    }
+                )
+            }
+        }
+    }
     single<TrainService> { TrainService(get<HttpClient>()) }
 }
 
