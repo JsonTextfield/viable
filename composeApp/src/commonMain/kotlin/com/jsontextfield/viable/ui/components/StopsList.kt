@@ -18,18 +18,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CollectionInfo
 import androidx.compose.ui.semantics.CollectionItemInfo
 import androidx.compose.ui.semantics.collectionInfo
 import androidx.compose.ui.semantics.collectionItemInfo
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
-import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Stop
-import org.apache.commons.text.StringEscapeUtils
+import org.jetbrains.compose.resources.stringResource
+import viable.composeapp.generated.resources.Res
+import viable.composeapp.generated.resources.arrives_in
+import viable.composeapp.generated.resources.departed
 
 @Composable
 fun StopsList(
@@ -78,11 +78,11 @@ fun StopsList(
                 supportingContent = {
                     Text(
                         if (stop.eta == "ARR") {
-                            stringResource(id = R.string.departed)
+                            stringResource(Res.string.departed)
                         } else {
                             stringResource(
-                                id = R.string.arrives_in,
-                                StringEscapeUtils.unescapeHtml4(stop.eta),
+                                Res.string.arrives_in,
+                                stop.eta,
                             )
                         },
                         modifier = Modifier.padding(
@@ -101,14 +101,4 @@ fun StopsList(
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun StopListPreview() {
-    StopsList(
-        stops = (1 until 10).map {
-            Stop(id = "$it", name = "Stop $it", "${it * 7}m")
-        },
-    )
 }

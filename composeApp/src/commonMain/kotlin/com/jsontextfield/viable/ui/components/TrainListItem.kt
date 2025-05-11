@@ -7,11 +7,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.model.Train
-import org.apache.commons.text.StringEscapeUtils
+import org.jetbrains.compose.resources.stringResource
+import viable.composeapp.generated.resources.Res
+import viable.composeapp.generated.resources.arrived
+import viable.composeapp.generated.resources.departed
+import viable.composeapp.generated.resources.next_stop
 
 @Composable
 fun TrainListItem(
@@ -37,17 +38,17 @@ fun TrainListItem(
                 when {
                     train.nextStop != null -> {
                         stringResource(
-                            id = R.string.next_stop, train.nextStop?.name ?: "",
-                            StringEscapeUtils.unescapeHtml4(train.nextStop?.eta ?: ""),
+                            Res.string.next_stop, train.nextStop?.name.orEmpty(),
+                            train.nextStop?.eta.orEmpty(),
                         )
                     }
 
                     train.arrived -> {
-                        stringResource(id = R.string.arrived)
+                        stringResource(Res.string.arrived)
                     }
 
                     train.departed -> {
-                        stringResource(id = R.string.departed)
+                        stringResource(Res.string.departed)
                     }
 
                     else -> {
@@ -56,19 +57,5 @@ fun TrainListItem(
                 }
             )
         },
-    )
-}
-
-@Preview
-@Composable
-private fun TrainListItemPreview() {
-    TrainListItem(
-        train = Train(
-            number = "45",
-            from = "Ottawa",
-            to = "Toronto",
-            departed = true,
-            arrived = true,
-        )
     )
 }

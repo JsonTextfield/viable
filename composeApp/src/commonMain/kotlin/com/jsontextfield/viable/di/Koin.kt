@@ -1,7 +1,5 @@
 package com.jsontextfield.viable.di
 
-import android.content.Context
-import androidx.room.Room
 import com.jsontextfield.viable.data.database.ViaRailRoomDatabase
 import com.jsontextfield.viable.data.repositories.ITrainRepository
 import com.jsontextfield.viable.data.repositories.TrainRepository
@@ -11,11 +9,12 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.startKoin
+import org.koin.core.module.Module
+import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import java.io.FileOutputStream
+
+expect fun platformModule(): Module
 
 val networkModule = module {
     single<HttpClient> {
@@ -33,17 +32,6 @@ val networkModule = module {
 }
 
 val dataModule = module {
-    single<ViaRailRoomDatabase> {
-        copyDatabaseIfNeeded(androidApplication())
-        Room
-            .databaseBuilder(
-                androidApplication(),
-                ViaRailRoomDatabase::class.java,
-                "viarail.db"
-            )
-            .fallbackToDestructiveMigration(true)
-            .build()
-    }
     single<ITrainRepository> {
         TrainRepository(
             get<ViaRailRoomDatabase>(),
@@ -58,20 +46,14 @@ val viewModelModule = module {
     }
 }
 
-fun initKoin(context: Context) {
+fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
-        androidContext(context)
+        config?.invoke(this)
         modules(
+            platformModule(),
             networkModule,
             dataModule,
             viewModelModule,
         )
-    }
-}
-
-fun copyDatabaseIfNeeded(context: Context) {
-    val dbFile = context.getDatabasePath("viarail.db")
-    if (!dbFile.exists()) {
-        context.assets.open("via.db").copyTo(FileOutputStream(dbFile))
     }
 }

@@ -7,7 +7,12 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 
 kotlin {
     androidTarget {
@@ -49,7 +54,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             implementation(libs.commons.text)
-            implementation(libs.androidx.room.ktx)
+            implementation(libs.androidx.room.runtime)
 
             // Ktor
             implementation(libs.ktor.client.core)
@@ -58,7 +63,6 @@ kotlin {
 
             // Koin
             implementation(libs.koin.core)
-            implementation(libs.koin.android)
             implementation(libs.koin.compose.viewmodel)
 
         }
