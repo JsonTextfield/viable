@@ -65,7 +65,8 @@ private fun TrainListItemPreview() {
     TrainListItem(
         train = Train(
             number = "45",
-            headsign = "Ottawa -> Toronto",
+            from = "Ottawa",
+            to = "Toronto",
             departed = true,
             arrived = true,
         )

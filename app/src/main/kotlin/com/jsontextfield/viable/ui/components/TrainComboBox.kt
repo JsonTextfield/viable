@@ -38,7 +38,8 @@ fun TrainComboBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
         modifier = Modifier.padding(
-            start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LayoutDirection.Ltr),
+            start = WindowInsets.safeDrawing.asPaddingValues()
+                .calculateStartPadding(LayoutDirection.Ltr),
         )
     ) {
         ListItem(
@@ -79,7 +80,8 @@ private fun TrainComboBoxPreview() {
     TrainComboBox(
         selectedItem = Train(
             number = "45",
-            headsign = "Ottawa -> Toronto",
+            from = "Ottawa",
+            to = "Toronto",
         )
     )
 }

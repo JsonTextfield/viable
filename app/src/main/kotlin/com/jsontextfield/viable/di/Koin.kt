@@ -15,6 +15,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
+import java.io.FileOutputStream
 
 val networkModule = module {
     single<HttpClient> {
@@ -33,13 +34,14 @@ val networkModule = module {
 
 val dataModule = module {
     single<ViaRailRoomDatabase> {
+        copyDatabaseIfNeeded(androidApplication())
         Room
             .databaseBuilder(
                 androidApplication(),
                 ViaRailRoomDatabase::class.java,
                 "viarail.db"
-            ).createFromAsset("via.db")
-            .fallbackToDestructiveMigration()
+            )
+            .fallbackToDestructiveMigration(true)
             .build()
     }
     single<ITrainRepository> {
@@ -64,5 +66,12 @@ fun initKoin(context: Context) {
             dataModule,
             viewModelModule,
         )
+    }
+}
+
+fun copyDatabaseIfNeeded(context: Context) {
+    val dbFile = context.getDatabasePath("viarail.db")
+    if (!dbFile.exists()) {
+        context.assets.open("via.db").copyTo(FileOutputStream(dbFile))
     }
 }

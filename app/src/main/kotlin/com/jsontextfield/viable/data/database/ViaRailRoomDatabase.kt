@@ -6,7 +6,7 @@ import com.jsontextfield.viable.data.database.entities.Shape
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.database.entities.Trip
 
-@Database(entities = [Shape::class, Trip::class, Station::class], version = 1)
+@Database(entities = [Shape::class, Trip::class, Station::class], version = 1, exportSchema = false)
 abstract class ViaRailRoomDatabase : RoomDatabase(), IViaRailDatabase {
     abstract val shapeDao: ShapeDao
     abstract val stationDao: StationDao
