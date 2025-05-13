@@ -7,10 +7,10 @@ import com.jsontextfield.viable.data.model.Train
 import com.jsontextfield.viable.ui.App
 import platform.UIKit.UIViewController
 
-fun MainViewController(mapUIViewController: (Boolean, Boolean, Train?, Station?, List<Shape>) -> UIViewController) = ComposeUIViewController {
+fun MainViewController(mapUIViewController: (Boolean, Boolean, Train?, Station?, List<Shape>, List<Float>) -> UIViewController) = ComposeUIViewController {
     mapViewController = mapUIViewController
     App()
 }
 
-lateinit var mapViewController: (Boolean, Boolean, Train?, Station?, List<Shape>) -> UIViewController
+lateinit var mapViewController: (Boolean, Boolean, Train?, Station?, List<Shape>, List<Float>) -> UIViewController
 
