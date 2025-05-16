@@ -15,8 +15,8 @@ data class Train(
     private val to: String = "",
     val departed: Boolean = false,
     val arrived: Boolean = false,
-    private val lat: Double? = null,
-    private val lng: Double? = null,
+    val lat: Double? = null,
+    val lng: Double? = null,
     @JsonNames("times") val stops: List<Stop> = emptyList(),
 ) {
     val name: String
@@ -25,8 +25,11 @@ data class Train(
     val nextStop: Stop?
         get() = stops.find { it.eta != "ARR" }
 
-    val location: LatLon?
-        get() = if (lat != null && lng != null) LatLon(lat, lng) else null
+    val hasLocation: Boolean
+        get() = lat != null && lng != null
+
+    val isEnabled: Boolean
+        get() = hasLocation || nextStop != null
 }
 
 fun String.toMixedCase(): String {

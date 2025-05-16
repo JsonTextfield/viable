@@ -61,7 +61,7 @@ fun TrainComboBox(
             items.forEach { train ->
                 DropdownMenuItem(
                     contentPadding = PaddingValues(0.dp),
-                    enabled = train.location != null,
+                    enabled = train.isEnabled,
                     text = { TrainListItem(train, selectedItem == train) },
                     onClick = {
                         onItemSelected(train)

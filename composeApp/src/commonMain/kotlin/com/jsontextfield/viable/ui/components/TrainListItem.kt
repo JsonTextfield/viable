@@ -21,11 +21,11 @@ fun TrainListItem(
     isSelected: Boolean = false,
 ) {
     ListItem(
-        modifier = Modifier.alpha(if (train.location != null) 1f else 0.5f),
+        modifier = Modifier.alpha(if (train.isEnabled) 1f else 0.5f),
         colors = ListItemDefaults.colors(
             containerColor = if (isSelected) {
                 MaterialTheme.colorScheme.primaryContainer
-            } else if (train.location != null) {
+            } else if (train.hasLocation) {
                 MaterialTheme.colorScheme.surfaceContainerLow
             } else {
                 MaterialTheme.colorScheme.surface
@@ -37,15 +37,15 @@ fun TrainListItem(
         supportingContent = {
             Text(
                 when {
+                    train.arrived -> {
+                        stringResource(Res.string.arrived)
+                    }
+
                     train.nextStop != null -> {
                         stringResource(
                             Res.string.next_stop, train.nextStop?.name.orEmpty(),
                             train.nextStop?.eta.orEmpty().replaceHtmlEntities(),
                         )
-                    }
-
-                    train.arrived -> {
-                        stringResource(Res.string.arrived)
                     }
 
                     train.departed -> {

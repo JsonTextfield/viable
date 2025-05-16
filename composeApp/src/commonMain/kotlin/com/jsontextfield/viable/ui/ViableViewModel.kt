@@ -85,8 +85,7 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
             }
             val train: Train? =
                 data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
-                    ?: data.firstOrNull { it.location != null }
-                    ?: data.firstOrNull()
+                    ?: data.firstOrNull { it.isEnabled }
             onTrainSelected(train)
         }
     }
