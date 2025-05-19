@@ -1,15 +1,10 @@
-import UIKit
-import SwiftUI
 import ComposeApp
+import SwiftUI
+import UIKit
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        MainViewControllerKt.MainViewController(
-            mapUIViewController: { (isPortrait: KotlinBoolean, shouldMoveCamera: KotlinBoolean, selectedTrain: Train?, selectedStation: Station?, routeLine: [ComposeApp.Shape], lineColour: [KotlinFloat]) -> UIViewController in
-                let gmapView = GoogleMapView(isPortrait: isPortrait, shouldMoveCamera: shouldMoveCamera, selectedTrain: selectedTrain, selectedStation: selectedStation, routeLine: routeLine, lineColour: lineColour)
-                return UIHostingController(rootView: gmapView)
-            }
-        )
+        MainViewControllerKt.MainViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
@@ -19,10 +14,6 @@ struct ComposeView: UIViewControllerRepresentable {
 
 struct ContentView: View {
     var body: some View {
-        ComposeView()
-                .ignoresSafeArea()
+        ComposeView().ignoresSafeArea()
     }
 }
-
-
-

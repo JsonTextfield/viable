@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.kotlinCocoapods)
 }
 room {
     schemaDirectory("$projectDir/schemas")
@@ -20,15 +21,29 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    cocoapods {
+        version = "1.0.0"
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        ios.deploymentTarget = "15.4"
+        podfile = project.file("../iosApp/Podfile")
+        framework {
             baseName = "ComposeApp"
             isStatic = true
+        }
+
+        pod("GoogleMaps") {
+            version = libs.versions.pods.google.maps.get()
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
+
+        pod("Google-Maps-iOS-Utils") {
+            moduleName = "GoogleMapsUtils"
+            version = libs.versions.pods.google.ios.maps.utils.get()
+            extraOpts += listOf("-compiler-option", "-fmodules")
         }
     }
 

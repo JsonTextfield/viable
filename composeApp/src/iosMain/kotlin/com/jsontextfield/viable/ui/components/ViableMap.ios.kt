@@ -1,19 +1,18 @@
 package com.jsontextfield.viable.ui.components
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.viewinterop.UIKitViewController
+import androidx.compose.ui.viewinterop.UIKitView
+import cocoapods.Google_Maps_iOS_Utils.GMSCameraPosition
+import cocoapods.Google_Maps_iOS_Utils.GMSCameraUpdate
+import cocoapods.Google_Maps_iOS_Utils.GMSMapView
 import com.jsontextfield.viable.data.database.entities.Shape
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.model.Train
-import com.jsontextfield.viable.mapViewController
+import kotlinx.cinterop.ExperimentalForeignApi
 
+@OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun ViableMap(
     modifier: Modifier,
@@ -23,32 +22,14 @@ actual fun ViableMap(
     routeLine: List<Shape>,
     isPortrait: Boolean
 ) {
-    val (red, green, blue, alpha) = MaterialTheme.colorScheme.primary
-    var _isPortrait by remember { mutableStateOf(isPortrait) }
-    var _shouldMoveCamera by remember { mutableStateOf(shouldMoveCamera) }
-    var _selectedTrain by remember { mutableStateOf(selectedTrain) }
-    var _selectedStation by remember { mutableStateOf(selectedStation) }
-    var _routeLine by remember { mutableStateOf(routeLine) }
-    val view = remember {
-        mapViewController(
-            _isPortrait,
-            _shouldMoveCamera,
-            _selectedTrain,
-            _selectedStation,
-            _routeLine,
-            listOf(red, green, blue, alpha),
-        )
-    }
-    UIKitViewController(
-        factory = { view },
-        modifier = Modifier.fillMaxSize(),
-        update = { viewController ->
-            println("updating from ViableMap")
-            _isPortrait = isPortrait
-            _shouldMoveCamera = shouldMoveCamera
-            _selectedTrain = selectedTrain
-            _selectedStation = selectedStation
-            _routeLine = routeLine
-        },
+    val mapView = remember { GMSMapView() }
+
+    val cameraPosition = GMSCameraPosition.cameraWithLatitude(43.64, -79.78, 6.0F)
+    val cameraUpdate = GMSCameraUpdate.setCamera(cameraPosition)
+    mapView.moveCamera(cameraUpdate)
+
+    UIKitView(
+        modifier = modifier,
+        factory = { mapView }
     )
 }

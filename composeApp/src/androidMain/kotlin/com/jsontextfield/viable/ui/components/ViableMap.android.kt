@@ -48,10 +48,15 @@ actual fun ViableMap(
     val context = LocalContext.current
     val cameraPositionState = rememberCameraPositionState()
     LaunchedEffect(selectedTrain) {
-        if (shouldMoveCamera) {
-            selectedTrain?.location?.let {
-                cameraPositionState.animate(CameraUpdateFactory.newLatLng(LatLng(it.lat, it.lon)))
-            }
+        if (shouldMoveCamera && selectedTrain?.hasLocation == true) {
+            cameraPositionState.animate(
+                CameraUpdateFactory.newLatLng(
+                    LatLng(
+                        selectedTrain.lat!!,
+                        selectedTrain.lng!!
+                    )
+                )
+            )
         }
     }
     GoogleMap(
@@ -81,9 +86,9 @@ actual fun ViableMap(
                 points = routeLine.map { LatLng(it.lat, it.lon) },
                 color = MaterialTheme.colorScheme.primary,
             )
-            train.location?.let {
+            if (train.hasLocation) {
                 Marker(
-                    state = MarkerState(position = LatLng(it.lat, it.lon)),
+                    state = MarkerState(position = LatLng(train.lat!!, train.lng!!)),
                     title = selectedTrain.name,
                     icon = BitmapDescriptorFactory.fromAsset("train.png"),
                     snippet = if (!train.departed) {
@@ -103,7 +108,7 @@ actual fun ViableMap(
             Marker(
                 icon = BitmapDescriptorFactory.fromAsset("station.png"),
                 state = MarkerState(position = LatLng(it.lat, it.lon)),
-                title = it.name,
+                title = selectedTrain?.stops?.firstOrNull { stop -> stop.id == it.code }?.name.orEmpty(),
             )
         }
     }
