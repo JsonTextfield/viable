@@ -1,6 +1,6 @@
 package com.jsontextfield.viable.di
 
-import com.jsontextfield.viable.data.database.ViaRailRoomDatabase
+import com.jsontextfield.viable.data.database.IViaRailDatabase
 import com.jsontextfield.viable.data.repositories.ITrainRepository
 import com.jsontextfield.viable.data.repositories.TrainRepository
 import com.jsontextfield.viable.network.TrainService
@@ -18,8 +18,8 @@ import org.koin.dsl.module
 expect fun platformModule(): Module
 
 val networkModule = module {
-    single<HttpClient> {
-        HttpClient {
+    single<TrainService> {
+        TrainService(HttpClient {
             install(ContentNegotiation) {
                 json(
                     Json {
@@ -27,15 +27,14 @@ val networkModule = module {
                     }
                 )
             }
-        }
+        })
     }
-    single<TrainService> { TrainService(get<HttpClient>()) }
 }
 
 val dataModule = module {
     single<ITrainRepository> {
         TrainRepository(
-            get<ViaRailRoomDatabase>(),
+            get<IViaRailDatabase>(),
             get<TrainService>(),
         )
     }
