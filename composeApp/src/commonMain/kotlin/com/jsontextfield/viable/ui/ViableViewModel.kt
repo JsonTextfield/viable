@@ -24,14 +24,19 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
     private var timerJob: Job? = null
 
     init {
-        start()
-    }
-
-    private fun start() {
         timerJob = timerJob ?: viewModelScope.launch {
             while (true) {
                 if (timeRemaining.value <= 0) {
-                    downloadData()
+
+                    val data = repo.getTrains()
+                    _viableState.update {
+                        it.copy(trains = data)
+                    }
+                    val train: Train? =
+                        data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
+                            ?: data.firstOrNull { it.isEnabled }
+                    onTrainSelected(train)
+
                     _timeRemaining.value = 30_000
                 } else {
                     delay(1000)
@@ -57,8 +62,8 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
                     selectedTrain = train,
                     shouldMoveCamera = selectedTrainChanged,
                     selectedStation = if (selectedTrainChanged) null else it.selectedStation,
-                    routeLine = if (selectedTrainChanged) {
-                        repo.getLine(train?.number?.split(" ")?.first() ?: "")
+                    routeLine = if (selectedTrainChanged && train != null) {
+                        repo.getLine(train.routeNumber)
                     } else {
                         it.routeLine
                     },
@@ -74,19 +79,6 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
                     selectedStation = stop?.let { repo.getStation(it.id) }
                 )
             }
-        }
-    }
-
-    private fun downloadData() {
-        viewModelScope.launch {
-            val data = repo.getTrains()
-            _viableState.update {
-                it.copy(trains = data)
-            }
-            val train: Train? =
-                data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
-                    ?: data.firstOrNull { it.isEnabled }
-            onTrainSelected(train)
         }
     }
 }

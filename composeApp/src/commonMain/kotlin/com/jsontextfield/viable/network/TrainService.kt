@@ -16,7 +16,7 @@ class TrainService(private val client: HttpClient) {
                 response.body<Map<String, Train>>().map {
                     it.value.copy(number = it.key)
                 }.sortedBy {
-                    it.number.split(' ').first().toInt()
+                    it.routeNumber.toIntOrNull() ?: 0
                 }
             } else {
                 emptyList()
