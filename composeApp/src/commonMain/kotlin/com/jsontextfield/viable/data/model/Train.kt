@@ -32,7 +32,7 @@ data class Train(
         get() = lat != null && lng != null
 
     val isEnabled: Boolean
-        get() = hasLocation || nextStop != null
+        get() = hasLocation && nextStop != null
 }
 
 fun String.toMixedCase(): String {

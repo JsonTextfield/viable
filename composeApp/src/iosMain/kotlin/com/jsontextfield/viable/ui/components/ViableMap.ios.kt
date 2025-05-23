@@ -62,8 +62,7 @@ actual fun ViableMap(
     val trainMarker = remember {
         GMSMarker().apply {
             runBlocking {
-                val icon = UIImage(Res.readBytes("files/train.png").toNSData())
-                setIcon(icon)
+                setIcon(UIImage.imageWithData(Res.readBytes("files/train.png").toNSData(), 2.5))
             }
             setMap(mapView)
         }
@@ -71,8 +70,7 @@ actual fun ViableMap(
     val stationMarker = remember {
         GMSMarker().apply {
             runBlocking {
-                val icon = UIImage(Res.readBytes("files/station.png").toNSData())
-                setIcon(icon)
+                setIcon(UIImage.imageWithData(Res.readBytes("files/station.png").toNSData(), 2.5))
             }
             setMap(mapView)
         }
@@ -99,7 +97,7 @@ actual fun ViableMap(
                     val cameraUpdate = GMSCameraPosition.cameraWithLatitude(
                         latitude = train.lat!!,
                         longitude = train.lng!!,
-                        zoom = 10f,
+                        mapView.camera.zoom,
                     )
                     mapView.animateToCameraPosition(cameraUpdate)
                 }
@@ -125,14 +123,14 @@ actual fun ViableMap(
                         },
                     )
                 }
+            }
 
-                route.apply {
-                    val path = GMSMutablePath()
-                    routeLine.forEach { shape ->
-                        path.addLatitude(shape.lat, shape.lon)
-                    }
-                    setPath(path)
+            route.apply {
+                val path = GMSMutablePath()
+                routeLine.forEach { shape ->
+                    path.addLatitude(shape.lat, shape.lon)
                 }
+                setPath(path)
             }
         }
         selectedStation?.let {
