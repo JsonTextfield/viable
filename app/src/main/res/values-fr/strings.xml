@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Viable</string>
-    <string name="departed">Parti</string>
-    <string name="arrives_in">Arrive dans %s</string>
-    <string name="awaiting_departure">En attente de départ</string>
-    <string name="arrived">Arrivé</string>
-    <string name="next_stop">Prochain arrêt: %s dans %s</string>
-</resources>
