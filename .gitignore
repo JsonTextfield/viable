@@ -15,3 +15,6 @@
 local.properties
 /.idea/
 /.kotlin/
+/iosApp/iosApp/ApiKey.swift
+/iosApp/Pods/
+/composeApp/src/androidMain/res/values/google_maps_api_key.xml

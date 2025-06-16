@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.RoundCap
 import com.google.maps.android.compose.GoogleMap
@@ -70,6 +71,16 @@ actual fun ViableMap(
             } else {
                 null
             },
+            latLngBoundsForCameraTarget = if (routeLine.isNotEmpty()) {
+                LatLngBounds.builder().run {
+                    routeLine.forEach { shape ->
+                        include(LatLng(shape.lat, shape.lon))
+                    }
+                    build()
+                }
+            } else {
+                null
+            }
         ),
         contentPadding = PaddingValues(
             bottom = if (isPortrait) 0.dp else WindowInsets.safeDrawing.asPaddingValues()

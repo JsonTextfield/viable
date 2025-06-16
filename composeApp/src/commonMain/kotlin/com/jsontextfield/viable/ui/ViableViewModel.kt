@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.io.IOException
 
 class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
 
@@ -27,17 +28,17 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
         timerJob = timerJob ?: viewModelScope.launch {
             while (true) {
                 if (timeRemaining.value <= 0) {
-
-                    val data = repo.getTrains()
-                    _viableState.update {
-                        it.copy(trains = data)
+                    try {
+                        val data = repo.getTrains()
+                        _viableState.update {
+                            it.copy(trains = data)
+                        }
+                        (data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
+                            ?: data.firstOrNull { it.isEnabled })?.let(::onTrainSelected)
+                        _timeRemaining.value = 30_000
+                    } catch (e: IOException) {
+                        _timeRemaining.value = 1000
                     }
-                    val train: Train? =
-                        data.firstOrNull { it.number == viableState.value.selectedTrain?.number }
-                            ?: data.firstOrNull { it.isEnabled }
-                    onTrainSelected(train)
-
-                    _timeRemaining.value = 30_000
                 } else {
                     delay(1000)
                     _timeRemaining.value -= 1000

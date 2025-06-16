@@ -6,8 +6,10 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.HttpStatusCode
 import kotlinx.io.IOException
+import kotlin.coroutines.cancellation.CancellationException
 
 class TrainService(private val client: HttpClient) {
+    @Throws(IOException::class, CancellationException::class)
     suspend fun getTrains(): List<Train> {
         val url = "https://tsimobile.viarail.ca/data/allData.json"
         try {
@@ -22,7 +24,7 @@ class TrainService(private val client: HttpClient) {
                 emptyList()
             }
         } catch (exception: IOException) {
+            throw exception
         }
-        return emptyList()
     }
 }
