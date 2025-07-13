@@ -37,7 +37,7 @@ fun MainScreen(
     val selectedTrain = viableState.selectedTrain
     val shouldMoveCamera = viableState.shouldMoveCamera
     val selectedStation = viableState.selectedStation
-    val trains = viableState.trains
+    val trains = viableState.trains.sortedByDescending { it.isEnabled }
     val routeLine = viableState.routeLine
 
     LaunchedEffect(selectedTrain) {

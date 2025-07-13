@@ -107,8 +107,8 @@ android {
         applicationId = "com.jsontextfield.viable"
         minSdk = 28
         targetSdk = 35
-        versionCode = 17
-        versionName = "1.2.9"
+        versionCode = 18
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
