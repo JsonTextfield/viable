@@ -18,7 +18,7 @@ abstract class ViaRailRoomDatabase : RoomDatabase(), IViaRailDatabase {
         return stationDao.getStation(code)
     }
     override suspend fun getPoints(route: String): List<Shape> {
-        return shapeDao.getPoints(route) ?: emptyList()
+        return shapeDao.getPoints(route)
     }
 }
 

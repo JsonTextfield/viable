@@ -19,20 +19,11 @@ data class Train(
     val lng: Double? = null,
     @JsonNames("times") val stops: List<Stop> = emptyList(),
 ) {
-    val routeNumber: String
-        get() = number.split(' ').firstOrNull().orEmpty()
-
-    val name: String
-        get() = "$number $from -> $to".toMixedCase()
-
-    val nextStop: Stop?
-        get() = stops.firstOrNull { it.eta != "ARR" }
-
-    val hasLocation: Boolean
-        get() = lat != null && lng != null
-
-    val isEnabled: Boolean
-        get() = hasLocation && nextStop != null
+    val routeNumber: String = number.split(' ').firstOrNull().orEmpty()
+    val name: String = "$number $from -> $to".toMixedCase()
+    val nextStop: Stop? = stops.firstOrNull { it.eta != "ARR" }
+    val hasLocation: Boolean = lat != null && lng != null
+    val isEnabled: Boolean = hasLocation && nextStop != null
 }
 
 fun String.toMixedCase(): String {

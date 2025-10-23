@@ -21,14 +21,21 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
+        }
+    }
     cocoapods {
-        version = "1.0.0"
+        version = "1.3.0"
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "15.4"
+        ios.deploymentTarget = "18.4"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "ComposeApp"
@@ -101,12 +108,12 @@ dependencies {
 
 android {
     namespace = "com.jsontextfield.viable"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.jsontextfield.viable"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 18
         versionName = "1.3.0"
 
