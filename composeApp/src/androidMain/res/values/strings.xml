@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Viable</string>
+    <string name="departed">Departed</string>
+    <string name="arrives_in">Arrives in %1$s</string>
+    <string name="awaiting_departure">Awaiting departure</string>
+    <string name="arrived">Arrived</string>
+    <string name="next_stop">Next stop: %1$s in %2$s</string>
 </resources>

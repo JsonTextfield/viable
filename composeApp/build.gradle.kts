@@ -61,6 +61,10 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
             implementation(libs.maps.compose)
+
+            // Jetpack Glance
+            implementation(libs.androidx.glance.appwidget)
+            implementation(libs.androidx.glance.material3)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
