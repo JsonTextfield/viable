@@ -10,7 +10,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextDefaults
 import com.jsontextfield.viable.R
 import com.jsontextfield.viable.data.model.Train
-import com.jsontextfield.viable.data.model.replaceHtmlEntities
+import com.jsontextfield.viable.replaceHtmlEntities
 
 @Composable
 fun WidgetTrainListItem(

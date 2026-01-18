@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import com.jsontextfield.viable.data.model.Stop
-import com.jsontextfield.viable.data.model.replaceHtmlEntities
+import com.jsontextfield.viable.replaceHtmlEntities
 import org.jetbrains.compose.resources.stringResource
 import viable.composeapp.generated.resources.Res
 import viable.composeapp.generated.resources.arrives_in

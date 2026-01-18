@@ -2,8 +2,7 @@
 
 package com.jsontextfield.viable.data.model
 
-import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.toLowerCase
+import com.jsontextfield.viable.toMixedCase
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
@@ -24,14 +23,4 @@ data class Train(
     val nextStop: Stop? = stops.firstOrNull { it.eta != "ARR" }
     val hasLocation: Boolean = lat != null && lng != null
     val isEnabled: Boolean = hasLocation && nextStop != null
-}
-
-fun String.toMixedCase(): String {
-    return toLowerCase(Locale.current)
-        .split(" ")
-        .joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
-}
-
-fun String.replaceHtmlEntities(): String {
-    return this.replace("&mdash;", "—")
 }

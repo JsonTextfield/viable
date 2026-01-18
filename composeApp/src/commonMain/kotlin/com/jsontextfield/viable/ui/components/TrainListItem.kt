@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.jsontextfield.viable.data.model.Train
-import com.jsontextfield.viable.data.model.replaceHtmlEntities
+import com.jsontextfield.viable.replaceHtmlEntities
 import org.jetbrains.compose.resources.stringResource
 import viable.composeapp.generated.resources.Res
 import viable.composeapp.generated.resources.arrived

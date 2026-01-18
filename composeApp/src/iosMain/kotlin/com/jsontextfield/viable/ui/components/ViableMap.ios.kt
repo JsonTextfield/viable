@@ -24,7 +24,7 @@ import com.jsontextfield.viable.data.database.entities.Shape
 import com.jsontextfield.viable.data.database.entities.Station
 import com.jsontextfield.viable.data.database.toNSData
 import com.jsontextfield.viable.data.model.Train
-import com.jsontextfield.viable.data.model.replaceHtmlEntities
+import com.jsontextfield.viable.replaceHtmlEntities
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.compose.resources.ExperimentalResourceApi
