@@ -47,6 +47,11 @@ class ViableViewModel(private val repo: ITrainRepository) : ViewModel() {
         }
     }
 
+    fun stop() {
+        timerJob?.cancel()
+        timerJob = null
+    }
+
     override fun onCleared() {
         timerJob?.cancel()
         timerJob = null
