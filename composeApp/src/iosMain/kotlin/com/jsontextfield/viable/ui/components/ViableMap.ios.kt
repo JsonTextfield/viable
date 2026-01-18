@@ -132,7 +132,7 @@ actual fun ViableMap(
 
             route.apply {
                 val path = GMSMutablePath()
-                routeLine.forEach { shape ->
+                for (shape in routeLine) {
                     path.addLatitude(shape.lat, shape.lon)
                 }
                 setPath(path)

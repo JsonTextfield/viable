@@ -73,7 +73,7 @@ actual fun ViableMap(
             },
             latLngBoundsForCameraTarget = if (routeLine.isNotEmpty()) {
                 LatLngBounds.builder().run {
-                    routeLine.forEach { shape ->
+                    for (shape in routeLine) {
                         include(LatLng(shape.lat, shape.lon))
                     }
                     build()

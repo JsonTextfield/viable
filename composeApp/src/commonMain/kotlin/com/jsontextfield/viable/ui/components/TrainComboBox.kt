@@ -20,6 +20,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.CollectionInfo
+import androidx.compose.ui.semantics.CollectionItemInfo
+import androidx.compose.ui.semantics.collectionInfo
+import androidx.compose.ui.semantics.collectionItemInfo
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.jsontextfield.viable.data.model.Train
@@ -56,9 +61,15 @@ fun TrainComboBox(
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.semantics {
+                collectionInfo = CollectionInfo(
+                    rowCount = items.size,
+                    columnCount = 1,
+                )
+            }
         ) {
-            items.forEach { train ->
+            items.forEachIndexed { index, train ->
                 DropdownMenuItem(
                     contentPadding = PaddingValues(0.dp),
                     enabled = train.isEnabled,
@@ -66,6 +77,14 @@ fun TrainComboBox(
                     onClick = {
                         onItemSelected(train)
                         expanded = false
+                    },
+                    modifier = Modifier.semantics {
+                        collectionItemInfo = CollectionItemInfo(
+                            rowIndex = index,
+                            columnIndex = 0,
+                            rowSpan = 1,
+                            columnSpan = 1,
+                        )
                     }
                 )
             }
