@@ -4,12 +4,16 @@ import com.jsontextfield.viable.data.model.Train
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
+import co.touchlab.kermit.Logger as Kermit
 
 class TrainService {
     private val client = HttpClient {
@@ -19,6 +23,16 @@ class TrainService {
                     ignoreUnknownKeys = true
                 }
             )
+        }
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Kermit
+                        .withTag("HttpClient")
+                        .d(message)
+                }
+            }
+            level = LogLevel.INFO
         }
     }
     @Throws(IOException::class, CancellationException::class)
